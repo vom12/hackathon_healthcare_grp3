@@ -54,7 +54,7 @@ bot.dialog('/', [
     function (session, results) {
         session.userData.desiredDate = results.response.entity;
         
-        ugbroka.addReferrer('203181', session.userData.appointmentType, '01010110', '2017-08-28');
+        ugbroka.addReferrer('203181', 'CARDIO', '01010110', '2017-08-28');
 
         session.send(session.userData.desiredDate + " - " + session.userData.appointmentType);
         builder.Prompts.choice(session, "Please choose desired hospital", ["Site A", "Site B"], {listStyle: builder.ListStyle.button});
