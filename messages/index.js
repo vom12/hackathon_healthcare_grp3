@@ -40,33 +40,34 @@ bot.dialog('/', [
     function (session, args) {
         var intent = args.intent;
         var title = builder.EntityRecognizer.findEntity(intent.entities, 'AppointmentType');
-        console.log("appointment");
+        session.send("Appointment...");
         //builder.Prompts.text(session, "Greetings! Please choose your appointment type.");
-        builder.Prompts.choice(session, "Greetings! Please choose your appointment type.", ["Cardio"], {listStyle: builder.ListStyle.button})
+        builder.Prompts.choice(session, "Greetings! Please choose your appointment type.", ["Cardio"], { listStyle: builder.ListStyle.button })
     },
     function (session, results) {
         session.userData.appointmentType = results.response.entity;
-
+        console.log(session.userData.desiredDate)
         builder.Prompts.time(session, "Please enter desired date.");
-       
+
         //builder.Prompts.number(session, "Hi " + results.response.entity + ", How many years have you been coding?"); 
     },
     function (session, results) {
         session.userData.desiredDate = results.response.entity;
-        
-        // ugbroka.addReferrer('203181', 'CARDIO', '01010110', '2017-08-28',function(res){
-        //     console.log(res)
-        // });
+        console.log(session.userData.desiredDate)
+        session.send("Sending Referal...");
+        ugbroka.addReferrer('203181', 'CARDIO', '01010110', '2017-08-28', function (res) {
+            console.log(res)
+        });
 
-        builder.Prompts.choice(session, "Please choose desired hospital and doctor.", ["Site A - Dr. Dickson Martin", "Site A - Dr. Erwing Sandra", "Site B - Dr. Schwarz Marc"], {listStyle: builder.ListStyle.button});
+        builder.Prompts.choice(session, "Please choose desired hospital and doctor.", ["Site A - Dr. Dickson Martin", "Site A - Dr. Erwing Sandra", "Site B - Dr. Schwarz Marc"], { listStyle: builder.ListStyle.button });
     },
 
     function (session, results) {
         session.userData.hospDoc = results.response.entity;
         var timeslot = [];
 
-        if(results.response.entity){
-            switch(results.response.entity){
+        if (results.response.entity) {
+            switch (results.response.entity) {
                 case "Site A - Dr. Dickson Martin":
                     timeslot = ["8:00-8:30", "8:30-9:00", "9:00-9:30"];
                     break;
@@ -74,11 +75,11 @@ bot.dialog('/', [
                     timeslot = ["8:00-8:30", "8:30-9:00", "9:00-9:30"];
                     break;
                 case "Site B - Dr. Schwarz Marc":
-                timeslot = ["8:00-8:30", "8:30-9:00", "9:00-9:30"];
-                break;
+                    timeslot = ["8:00-8:30", "8:30-9:00", "9:00-9:30"];
+                    break;
             }
         }
-        builder.Prompts.choice(session, "Please choose desired timeslot", timeslot, {listStyle: builder.ListStyle.button});
+        builder.Prompts.choice(session, "Please choose desired timeslot", timeslot, { listStyle: builder.ListStyle.button });
         //builder.Prompts.number(session, "Hi " + results.response.entity + ", How many years have you been coding?"); 
     },
     function (session, results) {
@@ -106,13 +107,13 @@ intents.onDefault((session) => {
 if (useEmulator) {
     var restify = require('restify');
     var server = restify.createServer();
-    server.listen(3978, function() {
+    server.listen(3978, function () {
         console.log('test bot endpont at http://localhost:3978/api/messages');
     });
-    server.post('/api/messages', connector.listen());    
+    server.post('/api/messages', connector.listen());
 } else {
     var listener = connector.listen();
-    var withLogging = function(context, req) {
+    var withLogging = function (context, req) {
         console.log = context.log;
         listener(context, req);
     }
