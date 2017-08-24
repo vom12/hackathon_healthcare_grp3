@@ -64,11 +64,11 @@ var addReferrer = function (patientID, department, referralNumber, day, callback
 
             } else {
                 console.log('ERROR : \n\n' + JSON.stringify(err, null, 2));
-                //console.log('RAW' + raw);
-                //console.log('REQUEST' + client.lastRequest)
+                console.log('RAW' + raw);
+                console.log('REQUEST' + client.lastRequest)
             }
 
-        });
+        },{proxy: "http://web-proxy.phil.hp.com:8088"});
 
 
 
