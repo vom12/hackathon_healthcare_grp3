@@ -40,6 +40,7 @@ bot.dialog('/', [
     function (session, args) {
         var intent = args.intent;
         var title = builder.EntityRecognizer.findEntity(intent.entities, 'AppointmentType');
+        console.log("appointment");
         //builder.Prompts.text(session, "Greetings! Please choose your appointment type.");
         builder.Prompts.choice(session, "Greetings! Please choose your appointment type.", ["Cardio"], {listStyle: builder.ListStyle.button})
     },
@@ -54,7 +55,9 @@ bot.dialog('/', [
     function (session, results) {
         session.userData.desiredDate = results.response.entity;
         
-        ugbroka.addReferrer('203181', 'CARDIO', '01010110', '2017-08-28');
+        ugbroka.addReferrer('203181', 'CARDIO', '01010110', '2017-08-28',function(res){
+            console.log(res)
+        });
 
         session.send(session.userData.desiredDate + " - " + session.userData.appointmentType);
         builder.Prompts.choice(session, "Please choose desired hospital", ["Site A", "Site B"], {listStyle: builder.ListStyle.button});
