@@ -48,7 +48,7 @@ bot.dialog('/', [
         session.send(session.userData.appointmentType);
         // session.send("Sending Referral");
         // session.sendTyping();
-        builder.Prompts.text(session, "Please provide desidired date.");
+        builder.Prompts.text(session, "Please choose desired date.");
         //builder.Prompts.number(session, "Hi " + results.response.entity + ", How many years have you been coding?"); 
     },
     function (session, results) {
