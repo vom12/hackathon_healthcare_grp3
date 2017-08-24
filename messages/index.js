@@ -46,7 +46,7 @@ bot.dialog('/', [
     },
     function (session, results) {
         session.userData.appointmentType = results.response.entity;
-        console.log(session.userData.desiredDate)
+        console.log(JSON.stringify(session.userData,null,2))
         builder.Prompts.time(session, "Please enter desired date.");
 
         //builder.Prompts.number(session, "Hi " + results.response.entity + ", How many years have you been coding?"); 
@@ -55,9 +55,9 @@ bot.dialog('/', [
         session.userData.desiredDate = results.response.entity;
         console.log(session.userData.desiredDate)
         session.send("Sending Referal...");
-        ugbroka.addReferrer('203181', 'CARDIO', '01010110', '2017-08-28', function (res) {
-            console.log(res)
-        });
+        // ugbroka.addReferrer('203181', 'CARDIO', '01010110', '2017-08-28', function (res) {
+        //     console.log(res)
+        // });
 
         builder.Prompts.choice(session, "Please choose desired hospital and doctor.", ["Site A - Dr. Dickson Martin", "Site A - Dr. Erwing Sandra", "Site B - Dr. Schwarz Marc"], { listStyle: builder.ListStyle.button });
     },
