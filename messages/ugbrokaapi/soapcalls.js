@@ -68,7 +68,7 @@ var addReferrer = function (patientID, department, referralNumber, day, callback
                 //console.log('REQUEST' + client.lastRequest)
             }
 
-        }, { proxy: 'http://web-proxy.phil.hp.com:8088' });
+        });
 
 
 
@@ -124,7 +124,7 @@ var findFreeSlots = function (app, orderNumber, c) {
             }
 
 
-        }, { proxy: 'http://web-proxy.phil.hp.com:8088' });
+        });
 
 
 
