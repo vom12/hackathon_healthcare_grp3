@@ -53,7 +53,9 @@ bot.dialog('/', [
     function (session, results) {
         session.userData.desiredDate = results.response.entity;
 
+        console.log("call");
         ugbroka.addReferrer('203181', session.userData.appointmentType, 'HACK00123', session.userData.desiredDate);
+        
     },
 
     // function (session, results) {
