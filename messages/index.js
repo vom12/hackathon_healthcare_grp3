@@ -55,7 +55,7 @@ bot.dialog('/', [
         session.userData.desiredDate = results.response.entity;
         session.send(session.userData.desiredDate);
         console.log("call");
-        ugbroka.addReferrer('203181', session.userData.appointmentType, '000000000001', session.userData.desiredDate);
+        //ugbroka.addReferrer('203181', session.userData.appointmentType, '000000000001', session.userData.desiredDate);
         session.send("Added");
     },
 
