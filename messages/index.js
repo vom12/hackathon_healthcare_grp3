@@ -54,9 +54,9 @@ bot.dialog('/', [
     function (session, results) {
         session.userData.desiredDate = results.response.entity;
         
-        ugbroka.addReferrer('203181', 'CARDIO', '01010110', '2017-08-28',function(res){
-            console.log(res)
-        });
+        // ugbroka.addReferrer('203181', 'CARDIO', '01010110', '2017-08-28',function(res){
+        //     console.log(res)
+        // });
 
         builder.Prompts.choice(session, "Please choose desired hospital and doctor.", ["Site A - Dr. Dickson Martin", "Site A - Dr. Erwing Sandra", "Site B - Dr. Schwarz Marc"], {listStyle: builder.ListStyle.button});
     },
