@@ -47,7 +47,7 @@ bot.dialog('/', [
     function (session, results) {
         session.userData.appointmentType = results.response.entity;
 
-        builder.Prompts.text(session, "Please enter desired date.");
+        builder.Prompts.time(session, "Please enter desired date.");
        
         //builder.Prompts.number(session, "Hi " + results.response.entity + ", How many years have you been coding?"); 
     },
@@ -86,7 +86,6 @@ bot.dialog('/', [
 
         session.endDialog("Appointment Details: \n Appointment Type: " + session.userData.appointmentType + "\n Hospital and Doctor: " + session.userData.hospDoc + "\n Date: " + session.userData.desiredDate + " - " + session.userData.timeslot);
     }
-
 ]).triggerAction({ matches: 'ScheduleAppointment' });
 
 //dialog.on('ScheduleAppointment', [
