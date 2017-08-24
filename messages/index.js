@@ -45,6 +45,7 @@ bot.dialog('/', [
     },
     function (session, results) {
         session.userData.appointmentType = results.response.entity;
+        session.send(session.userData.appointmentType);
         // session.send("Sending Referral");
         // session.sendTyping();
         builder.Prompts.text(session, "Please provide desidired date.");
@@ -52,7 +53,7 @@ bot.dialog('/', [
     },
     function (session, results) {
         session.userData.desiredDate = results.response.entity;
-
+        session.send(session.userData.desiredDate);
         console.log("call");
         ugbroka.addReferrer('203181', session.userData.appointmentType, 'HACK00123', session.userData.desiredDate);
         session.send("Added");
