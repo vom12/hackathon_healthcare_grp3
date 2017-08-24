@@ -57,15 +57,15 @@ bot.dialog('/', [
         ugbroka.addReferrer('203181', session.userData.appointmentType, '01010110', '2017-08-28');
 
         session.send(session.userData.desiredDate + " - " + session.userData.appointmentType);
-    }
+    },
 
-    // function (session, results) {
-    //     session.userData.name = results.response.entity;
-    //     session.send("Sending Referral");
-    //     session.sendTyping();
-    //     builder.Prompts.choice(session, "Please choose desired hospital", ["Site A", "Site B"], {listStyle: builder.ListStyle.button});
-    //     //builder.Prompts.number(session, "Hi " + results.response.entity + ", How many years have you been coding?"); 
-    // },
+    function (session, results) {
+        //session.userData.name = results.response.entity;
+        session.send("Sending Referral");
+        session.sendTyping();
+        builder.Prompts.choice(session, "Please choose desired hospital", ["Site A", "Site B"], {listStyle: builder.ListStyle.button});
+        //builder.Prompts.number(session, "Hi " + results.response.entity + ", How many years have you been coding?"); 
+    },
     // function (session, results) {
     //     var dr = [];
     //     session.userData.coding = results.response.entity;
