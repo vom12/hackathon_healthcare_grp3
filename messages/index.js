@@ -8,6 +8,7 @@ https://aka.ms/abs-node-luis
 var builder = require("botbuilder");
 var botbuilder_azure = require("botbuilder-azure");
 var path = require('path');
+var ugbroka = require('./ugbrokaapi/soapcalls');
 
 var useEmulator = (process.env.NODE_ENV == 'development');
 
@@ -43,53 +44,66 @@ bot.dialog('/', [
         builder.Prompts.choice(session, "Greetings! Please choose your appointment type.", ["Cardio"], {listStyle: builder.ListStyle.button})
     },
     function (session, results) {
-        session.userData.name = results.response.entity;
-        session.send("Sending Referral");
-        session.sendTyping();
-        builder.Prompts.choice(session, "Please choose desired hospital", ["Site A", "Site B"], {listStyle: builder.ListStyle.button});
+        session.userData.appointmentType = results.response.entity;
+        // session.send("Sending Referral");
+        // session.sendTyping();
+        builder.Prompts.text(session, "Please provide desidired date.");
         //builder.Prompts.number(session, "Hi " + results.response.entity + ", How many years have you been coding?"); 
     },
     function (session, results) {
-        var dr = [];
-        session.userData.coding = results.response.entity;
-        switch(results.response.entity){
-            case "Site A":
-                dr = ["Dr. A", "Dr. B", "Dr. C"];
-                break;
-            case "Site B":
-                dr = ["Dr. D", "Dr. E", "Dr. F"];
-                break;
-        }
-        
-        builder.Prompts.choice(session, "Select your doctor.", dr, {listStyle: builder.ListStyle.button});
-        //session.send(session.userData.coding)
-        //session.userData.coding = results.response;
-        //builder.Prompts.choice(session, "What language do you code Node using?", ["JavaScript", "CoffeeScript", "TypeScript"], {listStyle: builder.ListStyle.button});
+        session.userData.desiredDate = results.response.entity;
+
+        ugbroka.addReferrer('203181', session.userData.appointmentType, 'HACK00123', session.userData.desiredDate);
     },
-        function (session, results) {
-        var schedule = [];
-        session.userData.language = results.response.entity;
-        switch(results.response.entity){
-            case "Dr. E":
-                schedule = ["Sched1", "Sched2", "Sched3"];
-                break;
-            case "Dr. F":
-                schedule = ["Sched4", "Sched5", "Sched6"];
-                break;
-        }
+
+    // function (session, results) {
+    //     session.userData.name = results.response.entity;
+    //     session.send("Sending Referral");
+    //     session.sendTyping();
+    //     builder.Prompts.choice(session, "Please choose desired hospital", ["Site A", "Site B"], {listStyle: builder.ListStyle.button});
+    //     //builder.Prompts.number(session, "Hi " + results.response.entity + ", How many years have you been coding?"); 
+    // },
+    // function (session, results) {
+    //     var dr = [];
+    //     session.userData.coding = results.response.entity;
+    //     switch(results.response.entity){
+    //         case "Site A":
+    //             dr = ["Dr. A", "Dr. B", "Dr. C"];
+    //             break;
+    //         case "Site B":
+    //             dr = ["Dr. D", "Dr. E", "Dr. F"];
+    //             break;
+    //     }
         
-        builder.Prompts.choice(session, "Available schedules for " + results.response.entity, schedule, {listStyle: builder.ListStyle.button});
-        //session.send(session.userData.coding)
-        //session.userData.coding = results.response;
-        //builder.Prompts.choice(session, "What language do you code Node using?", ["JavaScript", "CoffeeScript", "TypeScript"], {listStyle: builder.ListStyle.button});
-    },
-    function (session, results) {
-        session.userData.test = results.response.entity;
-        session.send("Appointment Type - "
-                    + session.userData.name + 
-                    "On  " + session.userData.coding + 
-                    " Doctor " + session.userData.language + "." +  "Schedule - " + results.response.entity);
-    }
+    //     builder.Prompts.choice(session, "Select your doctor.", dr, {listStyle: builder.ListStyle.button});
+    //     //session.send(session.userData.coding)
+    //     //session.userData.coding = results.response;
+    //     //builder.Prompts.choice(session, "What language do you code Node using?", ["JavaScript", "CoffeeScript", "TypeScript"], {listStyle: builder.ListStyle.button});
+    // },
+    //     function (session, results) {
+    //     var schedule = [];
+    //     session.userData.language = results.response.entity;
+    //     switch(results.response.entity){
+    //         case "Dr. E":
+    //             schedule = ["Sched1", "Sched2", "Sched3"];
+    //             break;
+    //         case "Dr. F":
+    //             schedule = ["Sched4", "Sched5", "Sched6"];
+    //             break;
+    //     }
+        
+    //     builder.Prompts.choice(session, "Available schedules for " + results.response.entity, schedule, {listStyle: builder.ListStyle.button});
+    //     //session.send(session.userData.coding)
+    //     //session.userData.coding = results.response;
+    //     //builder.Prompts.choice(session, "What language do you code Node using?", ["JavaScript", "CoffeeScript", "TypeScript"], {listStyle: builder.ListStyle.button});
+    // },
+    // function (session, results) {
+    //     session.userData.test = results.response.entity;
+    //     session.send("Appointment Type - "
+    //                 + session.userData.name + 
+    //                 "On  " + session.userData.coding + 
+    //                 " Doctor " + session.userData.language + "." +  "Schedule - " + results.response.entity);
+    // }
 ]).triggerAction({ matches: 'ScheduleAppointment' });
 
 //dialog.on('ScheduleAppointment', [

@@ -1,0 +1,2024 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" 
+xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" 
+xmlns:s3="http://schemas.microsoft.com/2003/10/Serialization/Arrays" xmlns:tns="http://www.ultragenda.com/UltraGendaBroka" 
+xmlns:s2="http://www.ultragenda.com/ultragendapro/internalservices/1.0" 
+xmlns:s1="http://microsoft.com/wsdl/types/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" 
+targetNamespace="http://www.ultragenda.com/UltraGendaBroka" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www.ultragenda.com/UltraGendaBroka">
+      <s:import namespace="http://microsoft.com/wsdl/types/" />
+      <s:import namespace="http://www.ultragenda.com/ultragendapro/internalservices/1.0" />
+      <s:element name="RequestReferrerPortalAccessToken">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="aLoginName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="aPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="aNHSNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="aPatientNumber" type="tns:PatientNumber" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="PatientNumber">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Type" type="tns:PatientNumberType" />
+          <s:element minOccurs="0" maxOccurs="1" name="Value" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="PatientNumberType">
+        <s:restriction base="s:string">
+          <s:enumeration value="MasterPatientIndex" />
+          <s:enumeration value="UltraGenda" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="RequestReferrerPortalAccessTokenResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="RequestReferrerPortalAccessTokenResult" type="s1:guid" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RequestPatientPortalAccessToken">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="request" type="tns:PatientPortalAccessTokenRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="PatientPortalAccessTokenRequest">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="BookingCode" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OrderNumber" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="OrderApplication" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="PatientNumber" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Sex" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Birthdate" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="RequestPatientPortalAccessTokenResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="RequestPatientPortalAccessTokenResult" type="s1:guid" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RequestPatientPortalAccessTokenWithAppointmentSelection">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="request" type="tns:PatientPortalWithAppointmentSelectionAccessTokenRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="PatientPortalWithAppointmentSelectionAccessTokenRequest">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="EnvironmentContext" type="s2:EnvironmentContext" />
+          <s:element minOccurs="0" maxOccurs="1" name="PatientIdentifier" type="tns:PatientPortalUserIdentifier" />
+          <s:element minOccurs="0" maxOccurs="1" name="AppointmentIdentifier" type="tns:AppointmentSelectionIdentifier" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PatientPortalUserIdentifier">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="IdentifierName" type="tns:PatientPortalUserIdentifierName" />
+          <s:element minOccurs="0" maxOccurs="1" name="IdentifierValue" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="PatientPortalUserIdentifierName">
+        <s:restriction base="s:string">
+          <s:enumeration value="PatientExternalHISNumber" />
+          <s:enumeration value="PatientBookingCode" />
+          <s:enumeration value="PatientNationalNumber1" />
+          <s:enumeration value="PatientNationalNumber2" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="AppointmentSelectionIdentifier">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="IdentifierName" type="tns:AppointmentSelectionIdentifierName" />
+          <s:element minOccurs="0" maxOccurs="1" name="IdentifierValue" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="AppointmentSelectionIdentifierName">
+        <s:restriction base="s:string">
+          <s:enumeration value="InternalId" />
+          <s:enumeration value="Order" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="RequestPatientPortalAccessTokenWithAppointmentSelectionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="RequestPatientPortalAccessTokenWithAppointmentSelectionResult" type="s1:guid" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RequestPatientPortalAccessTokenWithReferralSelection">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="request" type="tns:PatientPortalWithReferralSelectionAccessTokenRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="PatientPortalWithReferralSelectionAccessTokenRequest">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="EnvironmentContext" type="s2:EnvironmentContext" />
+          <s:element minOccurs="0" maxOccurs="1" name="PatientIdentifier" type="tns:PatientPortalUserIdentifier" />
+          <s:element minOccurs="0" maxOccurs="1" name="ReferralIdentifier" type="tns:ReferralSelectionIdentifier" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ReferralSelectionIdentifier">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="IdentifierName" type="tns:AppointmentSelectionIdentifierName" />
+          <s:element minOccurs="0" maxOccurs="1" name="IdentifierValue" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="RequestPatientPortalAccessTokenWithReferralSelectionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="RequestPatientPortalAccessTokenWithReferralSelectionResult" type="s1:guid" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RequestPatientPortalAccessTokenOnNationalNumber">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="aNationalNumberType" type="tns:NationalNumberType" />
+            <s:element minOccurs="0" maxOccurs="1" name="aNationalNumber" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:simpleType name="NationalNumberType">
+        <s:restriction base="s:string">
+          <s:enumeration value="One" />
+          <s:enumeration value="Two" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="RequestPatientPortalAccessTokenOnNationalNumberResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="RequestPatientPortalAccessTokenOnNationalNumberResult" type="s1:guid" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FindPatients">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="findPatientsRequest" type="s2:FindPatientsRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FindPatientsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="FindPatientsResult" type="s2:FindPatientsResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddReferral">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="addReferralRequest" type="s2:AddReferralRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddReferralResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AddReferralResult" type="s2:AddReferralResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddPatient">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="addPatientRequest" type="s2:AddPatientRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddPatientResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AddPatientResult" type="s2:AddPatientResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FindAppointments">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="findAppointmentsRequest" type="s2:FindAppointmentsRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FindAppointmentsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="FindAppointmentsResult" type="s2:FindAppointmentsResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAppointment">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getAppointmentRequest" type="s2:GetAppointmentRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAppointmentResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAppointmentResult" type="s2:GetAppointmentResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FindReferrals">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="findReferralsRequest" type="s2:FindReferralsRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FindReferralsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="FindReferralsResult" type="s2:FindReferralsResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetReferral">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getReferralRequest" type="s2:GetReferralRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetReferralResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetReferralResult" type="s2:GetReferralResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPatient">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getPatientRequest" type="s2:GetPatientRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPatientResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetPatientResult" type="s2:GetPatientResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ScheduleAppointment">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="scheduleAppointmentRequest" type="s2:ScheduleAppointmentRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ScheduleAppointmentResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ScheduleAppointmentResult" type="s2:ScheduleAppointmentResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ScheduleReferral">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="scheduleReferralRequest" type="s2:ScheduleReferralRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ScheduleReferralResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ScheduleReferralResult" type="s2:ScheduleReferralResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ReScheduleAppointment">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="reScheduleAppointmentRequest" type="s2:ReScheduleAppointmentRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ReScheduleAppointmentResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ReScheduleAppointmentResult" type="s2:ReScheduleAppointmentResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetResourcesOnAppointmentType">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getResourcesOnAppointmentTypeRequest" type="s2:GetResourcesOnAppointmentTypeRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetResourcesOnAppointmentTypeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetResourcesOnAppointmentTypeResult" type="s2:GetResourcesOnAppointmentTypeResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FindFreeSlots">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="findFreeSlotsRequest" type="s2:FindFreeSlotsRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FindFreeSlotsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="FindFreeSlotsResult" type="s2:FindFreeSlotsResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CancelAppointment">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="cancelAppointmentRequest" type="s2:CancelAppointmentRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CancelAppointmentResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CancelAppointmentResult" type="s2:CancelAppointmentResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CancelReferral">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="cancelReferralRequest" type="s2:CancelReferralRequest" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CancelReferralResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CancelReferralResult" type="s2:CancelReferralResult" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://microsoft.com/wsdl/types/">
+      <s:simpleType name="guid">
+        <s:restriction base="s:string">
+          <s:pattern value="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}" />
+        </s:restriction>
+      </s:simpleType>
+    </s:schema>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www.ultragenda.com/ultragendapro/internalservices/1.0">
+      <s:import namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <s:complexType name="EnvironmentContext">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="DestinationEnvironmentCode" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="SourceEnvironmentCode" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SourceEnvironmentType" type="s2:EnvironmentTypes" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="EnvironmentTypes">
+        <s:restriction base="s:string">
+          <s:enumeration value="Unknown" />
+          <s:enumeration value="UGPro" />
+          <s:enumeration value="UGReferrerBookingSystem" />
+          <s:enumeration value="UGPatientBookingSystem" />
+          <s:enumeration value="UGTrackPro" />
+          <s:enumeration value="External" />
+          <s:enumeration value="ExternalChooseAndBook" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="FindPatientsRequest">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="EnvironmentContext" nillable="true" type="s2:EnvironmentContext" />
+          <s:element minOccurs="1" maxOccurs="1" name="PageSize" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="UserIdentifier" nillable="true" type="s2:UserIdentifier" />
+          <s:element minOccurs="1" maxOccurs="1" name="PageNumber" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="FamilyName" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="NamePrefix" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="GivenName" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="BirthDate" nillable="true" type="s2:NullableDateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="ZipCode" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="PatientNumber" nillable="true" type="s2:PatientNumber" />
+          <s:element minOccurs="1" maxOccurs="1" name="PatientNationalNumber1" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="PatientNationalNumber2" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Gender" type="s2:Sex" />
+          <s:element minOccurs="1" maxOccurs="1" name="CareProviderIds" nillable="true" type="s3:ArrayOfString" />
+          <s:element minOccurs="1" maxOccurs="1" name="ValidatedOnly" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="PhoneNumber" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="UserIdentifier">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="IdentifierName" type="s2:UserIdentifierName" />
+          <s:element minOccurs="1" maxOccurs="1" name="IdentifierValue" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="UserIdentifierName">
+        <s:restriction base="s:string">
+          <s:enumeration value="Login" />
+          <s:enumeration value="PatientFromMasterPatientIndex" />
+          <s:enumeration value="PatientFromUltraGenda" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="NullableDateTime">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Value" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PatientNumber">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Type" type="s2:NumberType" />
+          <s:element minOccurs="1" maxOccurs="1" name="Value" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="NumberType">
+        <s:restriction base="s:string">
+          <s:enumeration value="UltraGenda" />
+          <s:enumeration value="MPI" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="Sex">
+        <s:restriction base="s:string">
+          <s:enumeration value="Male" />
+          <s:enumeration value="Female" />
+          <s:enumeration value="Unknown" />
+          <s:enumeration value="Undefined" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="FindPatientsResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PageNumber" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="PageSize" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="HasNextPage" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="HasPreviousPage" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="FoundPatients" nillable="true" type="s2:ArrayOfFoundPatient" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfFoundPatient">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="FoundPatient" nillable="true" type="s2:FoundPatient" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="FoundPatient">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="InternalId" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="OnlineBookingCode" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="PatientNumber" nillable="true" type="s2:PatientNumber" />
+          <s:element minOccurs="1" maxOccurs="1" name="Address" nillable="true" type="s2:Address" />
+          <s:element minOccurs="1" maxOccurs="1" name="FamilyName" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="GivenName" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="MaidenName" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="BirthDate" nillable="true" type="s2:NullableDateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="DeathDate" nillable="true" type="s2:NullableDateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="Status" type="s2:PatientStatus" />
+          <s:element minOccurs="1" maxOccurs="1" name="Email" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Gender" type="s2:Sex" />
+          <s:element minOccurs="1" maxOccurs="1" name="NationalNumber1" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="NationalNumber2" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Address">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="City" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Code" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Country" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="State" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Street1" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Street2" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ZipCode" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="PatientStatus">
+        <s:restriction base="s:string">
+          <s:enumeration value="Validated" />
+          <s:enumeration value="Temporary" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="AddReferralRequest">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="EnvironmentContext" nillable="true" type="s2:EnvironmentContext" />
+          <s:element minOccurs="1" maxOccurs="1" name="DepartmentIdentifier" nillable="true" type="s2:Identifier" />
+          <s:element minOccurs="1" maxOccurs="1" name="UserIdentifier" nillable="true" type="s2:UserIdentifier" />
+          <s:element minOccurs="1" maxOccurs="1" name="AppointmentTypeIdentifier" nillable="true" type="s2:Identifier" />
+          <s:element minOccurs="1" maxOccurs="1" name="AppointmentTypeCoding" nillable="true" type="s2:UniversalCode" />
+          <s:element minOccurs="1" maxOccurs="1" name="PatientIdentifier" nillable="true" type="s2:PatientIdentifier" />
+          <s:element minOccurs="1" maxOccurs="1" name="ReferrerIdentifier" nillable="true" type="s2:Identifier" />
+          <s:element minOccurs="1" maxOccurs="1" name="Note" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="StartDate" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="EndDate" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="ReferralApplication" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ReferralNumber" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Identifier">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Type" type="s2:IdentifierType" />
+          <s:element minOccurs="1" maxOccurs="1" name="Value" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="IdentifierType">
+        <s:restriction base="s:string">
+          <s:enumeration value="Abbreviation" />
+          <s:enumeration value="ExternalCode" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="UniversalCode">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Code" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CodingSystem" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PatientIdentifier">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="IdentifierName" type="s2:PatientIdentifierName" />
+          <s:element minOccurs="1" maxOccurs="1" name="IdentifierValue" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="PatientIdentifierName">
+        <s:restriction base="s:string">
+          <s:enumeration value="MasterPatientIndex" />
+          <s:enumeration value="UltraGenda" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="AddReferralResult">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Referrals" nillable="true" type="s2:ArrayOfAppointment" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfAppointment">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Appointment" nillable="true" type="s2:Appointment" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Appointment">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="AppointmentActions" nillable="true" type="s2:AppointmentActions" />
+          <s:element minOccurs="1" maxOccurs="1" name="AppointmentDateTime" nillable="true" type="s2:NullableDateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="AppointmentStatus" type="s2:AppointmentStatus" />
+          <s:element minOccurs="1" maxOccurs="1" name="AppointmentType" nillable="true" type="s2:AppointmentType" />
+          <s:element minOccurs="1" maxOccurs="1" name="Authority" nillable="true" type="s2:Authority" />
+          <s:element minOccurs="1" maxOccurs="1" name="BookPeriod" nillable="true" type="s2:DateRange" />
+          <s:element minOccurs="0" maxOccurs="1" name="CombinationGroupId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="CombinationStep" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ContactTypeCategory" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ContactTypeName" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CreationDate" nillable="true" type="s2:NullableDateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="Department" nillable="true" type="s2:Department" />
+          <s:element minOccurs="0" maxOccurs="1" name="Duration" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="EntityType" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="GroupSerial" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="GuaranteedDate" nillable="true" type="s2:NullableDateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="Id" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="InitialId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Instructions" nillable="true" type="s2:ArrayOfInstruction" />
+          <s:element minOccurs="1" maxOccurs="1" name="Location" nillable="true" type="s2:Location" />
+          <s:element minOccurs="0" maxOccurs="1" name="MultiResourceGroupId" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="MultiResourceType" type="s2:MultiResourceType" />
+          <s:element minOccurs="1" maxOccurs="1" name="Note" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Order" nillable="true" type="s2:Order" />
+          <s:element minOccurs="1" maxOccurs="1" name="OtherStaff" nillable="true" type="s2:ArrayOfAuthority" />
+          <s:element minOccurs="1" maxOccurs="1" name="Patient" nillable="true" type="s2:Patient" />
+          <s:element minOccurs="1" maxOccurs="1" name="ReferralUserActions" nillable="true" type="s2:ReferralUserActions" />
+          <s:element minOccurs="1" maxOccurs="1" name="Referrer" nillable="true" type="s2:Referrer" />
+          <s:element minOccurs="1" maxOccurs="1" name="Resource" nillable="true" type="s2:Resource" />
+          <s:element minOccurs="1" maxOccurs="1" name="Site" nillable="true" type="s2:Site" />
+          <s:element minOccurs="0" maxOccurs="1" name="SourceEnvironmentType" type="s2:EnvironmentTypes" />
+          <s:element minOccurs="1" maxOccurs="1" name="Type" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="User" nillable="true" type="s2:User" />
+          <s:element minOccurs="0" maxOccurs="1" name="WasOriginallyAReferral" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AppointmentActions">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="CanPatientCancelAppointment" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="CanPatientRescheduleAppointment" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="AppointmentStatus">
+        <s:restriction base="s:string">
+          <s:enumeration value="OpenInFuture" />
+          <s:enumeration value="OpenInPast" />
+          <s:enumeration value="Attended" />
+          <s:enumeration value="NotAttended" />
+          <s:enumeration value="CancelledVisit" />
+          <s:enumeration value="PendingReferral" />
+          <s:enumeration value="CancelledReferral" />
+          <s:enumeration value="CancelledWaitingList" />
+          <s:enumeration value="WaitingListEntry" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="AppointmentType">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Abbreviation" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="CanOnlyBeUsedAsSlaveAppointmentType" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="DefaultDuration" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Department" nillable="true" type="s2:Department" />
+          <s:element minOccurs="1" maxOccurs="1" name="ExternalCode" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Id" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="MaximumDuration" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="MinimumDuration" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Name" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Department">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Abbreviation" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ContactMail" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ContactName" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ContactPhone" nillable="true" type="s2:Phone" />
+          <s:element minOccurs="1" maxOccurs="1" name="Description" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ExternalCode" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Id" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Name" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Phone" nillable="true" type="s2:Phone" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Phone">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Number" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Type" type="s2:Phone.PhoneType" />
+          <s:element minOccurs="0" maxOccurs="1" name="Usage" type="s2:Phone.PhoneUsage" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="Phone.PhoneType">
+        <s:restriction base="s:string">
+          <s:enumeration value="Phone" />
+          <s:enumeration value="Fax" />
+          <s:enumeration value="Mobile" />
+          <s:enumeration value="Other" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="Phone.PhoneUsage">
+        <s:restriction base="s:string">
+          <s:enumeration value="Private" />
+          <s:enumeration value="Business" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="Authority">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Abbreviation" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Email" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="FamilyName" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="GivenName" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Id" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Phones" nillable="true" type="s2:ArrayOfPhone" />
+          <s:element minOccurs="1" maxOccurs="1" name="ReimbursCode" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Title" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfPhone">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Phone" nillable="true" type="s2:Phone" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="DateRange">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="MaxDate" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="MinDate" type="s:dateTime" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfInstruction">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Instruction" nillable="true" type="s2:Instruction" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Instruction">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="ForCareProvider" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="ForNursing" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="ForPatient" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="Text" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Location">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Abbreviation" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Description" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Email" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Id" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Name" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Phones" nillable="true" type="s2:ArrayOfPhone" />
+          <s:element minOccurs="1" maxOccurs="1" name="Responsible" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="MultiResourceType">
+        <s:restriction base="s:string">
+          <s:enumeration value="SingleAppointment" />
+          <s:enumeration value="MasterAppointment" />
+          <s:enumeration value="SlaveAppointment" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="Order">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Application" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Number" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfAuthority">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Authority" nillable="true" type="s2:Authority" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Patient">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Address" nillable="true" type="s2:Address" />
+          <s:element minOccurs="1" maxOccurs="1" name="AlternatePatientNumbers" nillable="true" type="s2:ArrayOfAlternatePatientNumber" />
+          <s:element minOccurs="1" maxOccurs="1" name="BirthDate" nillable="true" type="s2:NullableDateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="CareProvider" nillable="true" type="s2:CareProvider" />
+          <s:element minOccurs="1" maxOccurs="1" name="CorrespondanceLanguage" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="DeathDate" nillable="true" type="s2:NullableDateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="Email" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="EthnicOrigin" nillable="true" type="s2:EthnicOrigin" />
+          <s:element minOccurs="1" maxOccurs="1" name="FamilyName" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="FamilyNamePrefix" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Gender" type="s2:Sex" />
+          <s:element minOccurs="1" maxOccurs="1" name="GivenName" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="HospitalInternalId" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="InternalId" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Language" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="LinkedRegistrations" nillable="true" type="s2:ArrayOfPatientNumber" />
+          <s:element minOccurs="1" maxOccurs="1" name="MaidenName" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="MaidenNamePrefix" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="MaritalStatus" nillable="true" type="s2:MaritalStatus" />
+          <s:element minOccurs="0" maxOccurs="1" name="MedicalAlert" type="s2:MedicalAlert" />
+          <s:element minOccurs="1" maxOccurs="1" name="MostRecentInternalId" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="MostRecentPatientNumber" nillable="true" type="s2:PatientNumber" />
+          <s:element minOccurs="1" maxOccurs="1" name="NationalNumber1" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="NationalNumber2" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Nationality" nillable="true" type="s2:Nationality" />
+          <s:element minOccurs="1" maxOccurs="1" name="Note" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="OnlineBookingCode" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ParentGuardianName" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="PatientNumber" nillable="true" type="s2:PatientNumber" />
+          <s:element minOccurs="1" maxOccurs="1" name="Phones" nillable="true" type="s2:ArrayOfPhone" />
+          <s:element minOccurs="1" maxOccurs="1" name="Practice" nillable="true" type="s2:Practice" />
+          <s:element minOccurs="1" maxOccurs="1" name="Religion" nillable="true" type="s2:Religion" />
+          <s:element minOccurs="0" maxOccurs="1" name="StaffIndication" type="s2:StaffIndication" />
+          <s:element minOccurs="0" maxOccurs="1" name="Status" type="s2:PatientStatus" />
+          <s:element minOccurs="1" maxOccurs="1" name="Title" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="User" nillable="true" type="s2:User" />
+          <s:element minOccurs="0" maxOccurs="1" name="VIPIndication" type="s2:VIPIndication" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfAlternatePatientNumber">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="AlternatePatientNumber" nillable="true" type="s2:AlternatePatientNumber" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AlternatePatientNumber">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Number" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="SourceCode" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="SourceName" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CareProvider">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Abbreviation" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Code" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Email" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="FamilyName" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="GivenName" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Id" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Phones" nillable="true" type="s2:ArrayOfPhone" />
+          <s:element minOccurs="1" maxOccurs="1" name="Title" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="EthnicOrigin">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Code" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Name" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfPatientNumber">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PatientNumber" nillable="true" type="s2:PatientNumber" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="MaritalStatus">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Code" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Name" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="MedicalAlert">
+        <s:restriction base="s:string">
+          <s:enumeration value="NoAlert" />
+          <s:enumeration value="Alert" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="Nationality">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Code" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ISOCode" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ISOName" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Name" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Practice">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Address" nillable="true" type="s2:Address" />
+          <s:element minOccurs="1" maxOccurs="1" name="Code" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="DistrictCode" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Id" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Name" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="RegionalCode" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Religion">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Code" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Name" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="StaffIndication">
+        <s:restriction base="s:string">
+          <s:enumeration value="NoStaff" />
+          <s:enumeration value="Staff" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="User">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Abbreviation" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="FamilyName" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="GivenName" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Id" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="LanguageCode" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="UserGroup" nillable="true" type="s2:UserGroup" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="UserGroup">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Abbreviation" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ExpirationDate" nillable="true" type="s2:NullableDateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="Id" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Name" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="UserGroupProfile" type="s2:UserGroupProfile" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="UserGroupProfile">
+        <s:restriction base="s:string">
+          <s:enumeration value="Internal" />
+          <s:enumeration value="External" />
+          <s:enumeration value="Patient" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="VIPIndication">
+        <s:restriction base="s:string">
+          <s:enumeration value="NoVIP" />
+          <s:enumeration value="VIP" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="ReferralUserActions">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="CanPatientCancelReferral" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="CanPatientScheduleReferral" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="CanUserCancelReferral" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="CanUserScheduleReferral" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Referrer">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Abbreviation" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ExternalCode" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="FamilyName" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="GivenName" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Title" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Resource">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Abbreviation" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Authority" nillable="true" type="s2:CarePerson" />
+          <s:element minOccurs="1" maxOccurs="1" name="DepartmentId" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Description" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="ExpireDate" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="ExternalCode" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Id" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Name" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="StartDate" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="UserId" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CarePerson">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Abbreviation" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Email" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="FamilyName" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="GivenName" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Id" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Phones" nillable="true" type="s2:ArrayOfPhone" />
+          <s:element minOccurs="1" maxOccurs="1" name="ReimbursCode" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Title" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Site">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Abbreviation" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Address" nillable="true" type="s2:Address" />
+          <s:element minOccurs="1" maxOccurs="1" name="Description" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Email" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Id" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="IsMain" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="Locations" nillable="true" type="s2:ArrayOfLocation" />
+          <s:element minOccurs="1" maxOccurs="1" name="Name" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Phones" nillable="true" type="s2:ArrayOfPhone" />
+          <s:element minOccurs="1" maxOccurs="1" name="Responsible" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfLocation">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Location" nillable="true" type="s2:Location" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AddPatientRequest">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="EnvironmentContext" nillable="true" type="s2:EnvironmentContext" />
+          <s:element minOccurs="1" maxOccurs="1" name="UserIdentifier" nillable="true" type="s2:UserIdentifier" />
+          <s:element minOccurs="1" maxOccurs="1" name="PatientStatus" type="s2:PatientStatus" />
+          <s:element minOccurs="1" maxOccurs="1" name="PatientNumber" nillable="true" type="s2:PatientNumber" />
+          <s:element minOccurs="1" maxOccurs="1" name="HospitalInternalId" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="LanguageCode" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CorrespondanceLanguageCode" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="FamilyNamePrefix" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="FamilyName" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="GivenName" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="MaidenNamePrefix" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="MaidenName" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Sex" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="BirthDate" nillable="true" type="s2:NullableDateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="Street1" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Street2" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="City" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ZipCode" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="State" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Country" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="PhoneType1" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Phone1" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="PhoneType2" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Phone2" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="BusinessPhoneType" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="BusinessPhone" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Email" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="DeathDate" nillable="true" type="s2:NullableDateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="NationalNumber1" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="NationalNumber2" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Note" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Title" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AddPatientResult">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="User" nillable="true" type="s2:User" />
+          <s:element minOccurs="1" maxOccurs="1" name="LinkedRegistrations" nillable="true" type="s2:ArrayOfPatientNumber" />
+          <s:element minOccurs="1" maxOccurs="1" name="AlternatePatientNumbers" nillable="true" type="s2:ArrayOfAlternatePatientNumber" />
+          <s:element minOccurs="1" maxOccurs="1" name="OnlineBookingCode" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="HospitalInternalId" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Language" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="CorrespondanceLanguage" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="InternalId" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="MostRecentInternalId" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Email" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="MedicalAlert" type="s2:MedicalAlert" />
+          <s:element minOccurs="0" maxOccurs="1" name="VIPIndication" type="s2:VIPIndication" />
+          <s:element minOccurs="0" maxOccurs="1" name="StaffIndication" type="s2:StaffIndication" />
+          <s:element minOccurs="1" maxOccurs="1" name="Nationality" nillable="true" type="s2:Nationality" />
+          <s:element minOccurs="1" maxOccurs="1" name="PatientNumber" nillable="true" type="s2:PatientNumber" />
+          <s:element minOccurs="1" maxOccurs="1" name="MostRecentPatientNumber" nillable="true" type="s2:PatientNumber" />
+          <s:element minOccurs="1" maxOccurs="1" name="Title" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="FamilyName" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="FamilyNamePrefix" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="GivenName" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="MaidenName" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="MaidenNamePrefix" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="BirthDate" nillable="true" type="s2:NullableDateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="DeathDate" nillable="true" type="s2:NullableDateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="Sex" type="s2:Sex" />
+          <s:element minOccurs="1" maxOccurs="1" name="Ssn" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="NationalNumber1" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="NationalNumber2" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="ParentGuardianName" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Note" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Address" nillable="true" type="s2:Address" />
+          <s:element minOccurs="1" maxOccurs="1" name="Phones" nillable="true" type="s2:ArrayOfPhone" />
+          <s:element minOccurs="1" maxOccurs="1" name="CareProvider" nillable="true" type="s2:CareProvider" />
+          <s:element minOccurs="1" maxOccurs="1" name="Religion" nillable="true" type="s2:Religion" />
+          <s:element minOccurs="1" maxOccurs="1" name="MaritalStatus" nillable="true" type="s2:MaritalStatus" />
+          <s:element minOccurs="1" maxOccurs="1" name="EthnicOrigin" nillable="true" type="s2:EthnicOrigin" />
+          <s:element minOccurs="1" maxOccurs="1" name="Practice" nillable="true" type="s2:Practice" />
+          <s:element minOccurs="0" maxOccurs="1" name="Status" type="s2:PatientStatus" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="FindAppointmentsRequest">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="EnvironmentContext" nillable="true" type="s2:EnvironmentContext" />
+          <s:element minOccurs="1" maxOccurs="1" name="UserIdentifier" nillable="true" type="s2:UserIdentifier" />
+          <s:element minOccurs="1" maxOccurs="1" name="PatientIdentifier" nillable="true" type="s2:PatientIdentifier" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="FindAppointmentsResult">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Appointments" nillable="true" type="s2:ArrayOfAppointment" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="GetAppointmentRequest">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="EnvironmentContext" nillable="true" type="s2:EnvironmentContext" />
+          <s:element minOccurs="1" maxOccurs="1" name="UserIdentifier" nillable="true" type="s2:UserIdentifier" />
+          <s:element minOccurs="1" maxOccurs="1" name="AppointmentIdentifier" nillable="true" type="s2:AppointmentIdentifier" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AppointmentIdentifier">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="IdentifierName" type="s2:AppointmentIdentifierName" />
+          <s:element minOccurs="1" maxOccurs="1" name="IdentifierValue" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="AppointmentIdentifierName">
+        <s:restriction base="s:string">
+          <s:enumeration value="InternalId" />
+          <s:enumeration value="Order" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="GetAppointmentResult">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Appointments" nillable="true" type="s2:ArrayOfAppointment" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="FindReferralsRequest">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="EnvironmentContext" nillable="true" type="s2:EnvironmentContext" />
+          <s:element minOccurs="1" maxOccurs="1" name="UserIdentifier" nillable="true" type="s2:UserIdentifier" />
+          <s:element minOccurs="1" maxOccurs="1" name="PatientIdentifier" nillable="true" type="s2:PatientIdentifier" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="FindReferralsResult">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Referrals" nillable="true" type="s2:ArrayOfAppointment" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="GetReferralRequest">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="EnvironmentContext" nillable="true" type="s2:EnvironmentContext" />
+          <s:element minOccurs="1" maxOccurs="1" name="UserIdentifier" nillable="true" type="s2:UserIdentifier" />
+          <s:element minOccurs="1" maxOccurs="1" name="ReferralIdentifier" nillable="true" type="s2:AppointmentIdentifier" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="GetReferralResult">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Referrals" nillable="true" type="s2:ArrayOfAppointment" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="GetPatientRequest">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="EnvironmentContext" nillable="true" type="s2:EnvironmentContext" />
+          <s:element minOccurs="1" maxOccurs="1" name="UserIdentifier" nillable="true" type="s2:UserIdentifier" />
+          <s:element minOccurs="1" maxOccurs="1" name="PatientIdentifier" nillable="true" type="s2:PatientIdentifier" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="GetPatientResult">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Patient" nillable="true" type="s2:Patient" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ScheduleAppointmentRequest">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="EnvironmentContext" nillable="true" type="s2:EnvironmentContext" />
+          <s:element minOccurs="1" maxOccurs="1" name="UserIdentifier" nillable="true" type="s2:UserIdentifier" />
+          <s:element minOccurs="1" maxOccurs="1" name="DepartmentIdentifier" nillable="true" type="s2:DepartmentIdentifier" />
+          <s:element minOccurs="1" maxOccurs="1" name="AppointmentTypeIdentifier" nillable="true" type="s2:AppointmentTypeIdentifier" />
+          <s:element minOccurs="1" maxOccurs="1" name="PatientIdentifier" nillable="true" type="s2:PatientIdentifier" />
+          <s:element minOccurs="1" maxOccurs="1" name="SlotIdentifiers" nillable="true" type="s2:ArrayOfSlotIdentifier" />
+          <s:element minOccurs="1" maxOccurs="1" name="ReferrerIdentifier" nillable="true" type="s2:ReferrerIdentifier" />
+          <s:element minOccurs="1" maxOccurs="1" name="Note" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="DepartmentIdentifier">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="IdentifierName" type="s2:DepartmentIdentifierName" />
+          <s:element minOccurs="1" maxOccurs="1" name="IdentifierValue" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="DepartmentIdentifierName">
+        <s:restriction base="s:string">
+          <s:enumeration value="InternalId" />
+          <s:enumeration value="ExternalCode" />
+          <s:enumeration value="Abbreviation" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="AppointmentTypeIdentifier">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="IdentifierName" type="s2:AppointmentTypeIdentifierName" />
+          <s:element minOccurs="1" maxOccurs="1" name="IdentifierValue" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="AppointmentTypeIdentifierName">
+        <s:restriction base="s:string">
+          <s:enumeration value="InternalId" />
+          <s:enumeration value="ExternalCode" />
+          <s:enumeration value="CodingSystemAndCode" />
+          <s:enumeration value="Abbreviation" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="ArrayOfSlotIdentifier">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="SlotIdentifier" nillable="true" type="s2:SlotIdentifier" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="SlotIdentifier">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="InternalId" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="StartDateTime" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="EndDateTime" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="StepSequence" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ReferrerIdentifier">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="IdentifierName" type="s2:ReferrerIdentifierName" />
+          <s:element minOccurs="1" maxOccurs="1" name="IdentifierValue" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="ReferrerIdentifierName">
+        <s:restriction base="s:string">
+          <s:enumeration value="InternalId" />
+          <s:enumeration value="Abbreviation" />
+          <s:enumeration value="ExternalCode" />
+          <s:enumeration value="FreeText" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="ScheduleAppointmentResult">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Appointments" nillable="true" type="s2:ArrayOfAppointment" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ScheduleReferralRequest">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="EnvironmentContext" nillable="true" type="s2:EnvironmentContext" />
+          <s:element minOccurs="1" maxOccurs="1" name="UserIdentifier" nillable="true" type="s2:UserIdentifier" />
+          <s:element minOccurs="1" maxOccurs="1" name="ReferralIdentifier" nillable="true" type="s2:AppointmentIdentifier" />
+          <s:element minOccurs="1" maxOccurs="1" name="SlotIdentifiers" nillable="true" type="s2:ArrayOfSlotIdentifier" />
+          <s:element minOccurs="1" maxOccurs="1" name="Note" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ScheduleReferralResult">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Appointments" nillable="true" type="s2:ArrayOfAppointment" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ReScheduleAppointmentRequest">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="EnvironmentContext" nillable="true" type="s2:EnvironmentContext" />
+          <s:element minOccurs="1" maxOccurs="1" name="UserIdentifier" nillable="true" type="s2:UserIdentifier" />
+          <s:element minOccurs="1" maxOccurs="1" name="AppointmentIdentifier" nillable="true" type="s2:AppointmentIdentifier" />
+          <s:element minOccurs="1" maxOccurs="1" name="SlotIdentifiers" nillable="true" type="s2:ArrayOfSlotIdentifier" />
+          <s:element minOccurs="1" maxOccurs="1" name="ReScheduleReasonIdentifier" nillable="true" type="s2:ModificationReasonIdentifier" />
+          <s:element minOccurs="1" maxOccurs="1" name="Note" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ModificationReasonIdentifier">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="IdentifierName" type="s2:ModificationReasonIdentifierName" />
+          <s:element minOccurs="1" maxOccurs="1" name="IdentifierValue" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="ModificationReasonIdentifierName">
+        <s:restriction base="s:string">
+          <s:enumeration value="Abbreviation" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="ReScheduleAppointmentResult">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Appointments" nillable="true" type="s2:ArrayOfAppointment" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="GetResourcesOnAppointmentTypeRequest">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="EnvironmentContext" nillable="true" type="s2:EnvironmentContext" />
+          <s:element minOccurs="1" maxOccurs="1" name="DepartmentIdentifier" nillable="true" type="s2:DepartmentIdentifier" />
+          <s:element minOccurs="1" maxOccurs="1" name="AppointmentTypeIdentifier" nillable="true" type="s2:AppointmentTypeIdentifier" />
+          <s:element minOccurs="1" maxOccurs="1" name="UserIdentifier" nillable="true" type="s2:UserIdentifier" />
+          <s:element minOccurs="1" maxOccurs="1" name="AppointmentIdentifier" nillable="true" type="s2:AppointmentIdentifier" />
+          <s:element minOccurs="1" maxOccurs="1" name="ReferralIdentifier" nillable="true" type="s2:AppointmentIdentifier" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="GetResourcesOnAppointmentTypeResult">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Resources" nillable="true" type="s2:ArrayOfResource" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfResource">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Resource" nillable="true" type="s2:Resource" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="FindFreeSlotsRequest">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="EnvironmentContext" nillable="true" type="s2:EnvironmentContext" />
+          <s:element minOccurs="1" maxOccurs="1" name="UserIdentifier" nillable="true" type="s2:UserIdentifier" />
+          <s:element minOccurs="1" maxOccurs="1" name="AppointmentIdentifier" nillable="true" type="s2:AppointmentIdentifier" />
+          <s:element minOccurs="1" maxOccurs="1" name="ReferralIdentifier" nillable="true" type="s2:AppointmentIdentifier" />
+          <s:element minOccurs="1" maxOccurs="1" name="DepartmentIdentifier" nillable="true" type="s2:DepartmentIdentifier" />
+          <s:element minOccurs="1" maxOccurs="1" name="AppointmentTypeIdentifier" nillable="true" type="s2:AppointmentTypeIdentifier" />
+          <s:element minOccurs="1" maxOccurs="1" name="SearchDuration" nillable="true" type="s2:NullableInt32" />
+          <s:element minOccurs="1" maxOccurs="1" name="SiteIdentifiers" nillable="true" type="s2:ArrayOfSiteIdentifier" />
+          <s:element minOccurs="1" maxOccurs="1" name="ResourceIdentifiers" nillable="true" type="s2:ArrayOfResourceIdentifier" />
+          <s:element minOccurs="1" maxOccurs="1" name="SearchAsOfDate" nillable="true" type="s2:NullableDateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="SearchUntilDate" nillable="true" type="s2:NullableDateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="IncludeMonday" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="IncludeTuesday" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="IncludeWednesday" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="IncludeThursday" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="IncludeFriday" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="IncludeSaturday" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="IncludeSunday" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="TimeRange" nillable="true" type="s2:TimeRange" />
+          <s:element minOccurs="1" maxOccurs="1" name="SearchState" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="SearchDirection" type="s2:SearchDirection" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="NullableInt32">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Value" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfSiteIdentifier">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="SiteIdentifier" nillable="true" type="s2:SiteIdentifier" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="SiteIdentifier">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="IdentifierName" type="s2:SiteIdentifierName" />
+          <s:element minOccurs="1" maxOccurs="1" name="IdentifierValue" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="SiteIdentifierName">
+        <s:restriction base="s:string">
+          <s:enumeration value="InternalId" />
+          <s:enumeration value="Abbreviation" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="ArrayOfResourceIdentifier">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ResourceIdentifier" nillable="true" type="s2:ResourceIdentifier" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ResourceIdentifier">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="IdentifierName" type="s2:ResourceIdentifierName" />
+          <s:element minOccurs="1" maxOccurs="1" name="IdentifierValue" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="ResourceIdentifierName">
+        <s:restriction base="s:string">
+          <s:enumeration value="InternalId" />
+          <s:enumeration value="Abbreviation" />
+          <s:enumeration value="ExternalCode" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="TimeRange">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="From" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="To" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="SearchDirection">
+        <s:restriction base="s:string">
+          <s:enumeration value="Initial" />
+          <s:enumeration value="SearchNext" />
+          <s:enumeration value="SearchPrevious" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="FindFreeSlotsResult">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Type" type="s2:AppointmentTypeSetType" />
+          <s:element minOccurs="1" maxOccurs="1" name="Steps" nillable="true" type="s2:ArrayOfStep" />
+          <s:element minOccurs="0" maxOccurs="1" name="HasNextSet" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="HasPreviousSet" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="SearchState" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="AppointmentTypeSetType">
+        <s:restriction base="s:string">
+          <s:enumeration value="Single" />
+          <s:enumeration value="MultiResource" />
+          <s:enumeration value="OrderSet" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="ArrayOfStep">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Step" nillable="true" type="s2:Step" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Step">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Programs" nillable="true" type="s2:ArrayOfProgram" />
+          <s:element minOccurs="1" maxOccurs="1" name="AccessoryDefinitions" nillable="true" type="s2:ArrayOfAccessoryDefinition" />
+          <s:element minOccurs="1" maxOccurs="1" name="IntervalBetweenCurrentAndSubsequentStep" nillable="true" type="s2:IntervalBetweenCurrentAndSubsequentStep" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfProgram">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Program" nillable="true" type="s2:Program" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Program">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="FreeEndDateTime" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="FreeStartDateTime" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="Resource" nillable="true" type="s2:Resource" />
+          <s:element minOccurs="1" maxOccurs="1" name="ResourceAppointmentType" nillable="true" type="s2:AppointmentTypeItem" />
+          <s:element minOccurs="1" maxOccurs="1" name="Site" nillable="true" type="s2:Site" />
+          <s:element minOccurs="1" maxOccurs="1" name="Slots" nillable="true" type="s2:ArrayOfSlot" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AppointmentTypeItem">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Abbreviation" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Department" nillable="true" type="s2:Department" />
+          <s:element minOccurs="1" maxOccurs="1" name="ExternalCode" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Id" nillable="true" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="Name" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfSlot">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Slot" nillable="true" type="s2:Slot" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Slot">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Id" nillable="true" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="StartTime" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="EndTime" type="s:dateTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="StepSequence" type="s:int" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfAccessoryDefinition">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="AccessoryDefinition" nillable="true" type="s2:AccessoryDefinition" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AccessoryDefinition">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="AppointmentType" nillable="true" type="s2:AppointmentType" />
+          <s:element minOccurs="1" maxOccurs="1" name="Duration" nillable="true" type="s2:AccessoryDuration" />
+          <s:element minOccurs="1" maxOccurs="1" name="Offset" nillable="true" type="s2:Offset" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="AccessoryDuration">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Value" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Type" type="s2:DurationType" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="DurationType">
+        <s:restriction base="s:string">
+          <s:enumeration value="RelativeToMaster" />
+          <s:enumeration value="Fixed" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="Offset">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Value" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="ReferenceTime" type="s2:ReferenceTime" />
+          <s:element minOccurs="0" maxOccurs="1" name="Unit" type="s2:Unit" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="ReferenceTime">
+        <s:restriction base="s:string">
+          <s:enumeration value="StartTime" />
+          <s:enumeration value="EndTime" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="Unit">
+        <s:restriction base="s:string">
+          <s:enumeration value="Minutes" />
+          <s:enumeration value="Days" />
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="IntervalBetweenCurrentAndSubsequentStep">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="MinimumOffset" nillable="true" type="s2:Offset" />
+          <s:element minOccurs="1" maxOccurs="1" name="OptimalOffset" nillable="true" type="s2:Offset" />
+          <s:element minOccurs="1" maxOccurs="1" name="MaximumOffset" nillable="true" type="s2:Offset" />
+          <s:element minOccurs="0" maxOccurs="1" name="SameResource" type="s:boolean" />
+          <s:element minOccurs="0" maxOccurs="1" name="SameSite" type="s:boolean" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CancelAppointmentRequest">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="EnvironmentContext" nillable="true" type="s2:EnvironmentContext" />
+          <s:element minOccurs="1" maxOccurs="1" name="UserIdentifier" nillable="true" type="s2:UserIdentifier" />
+          <s:element minOccurs="1" maxOccurs="1" name="AppointmentIdentifier" nillable="true" type="s2:AppointmentIdentifier" />
+          <s:element minOccurs="1" maxOccurs="1" name="CancellationReasonIdentifier" nillable="true" type="s2:ModificationReasonIdentifier" />
+          <s:element minOccurs="1" maxOccurs="1" name="Note" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CancelAppointmentResult" />
+      <s:complexType name="CancelReferralRequest">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="EnvironmentContext" nillable="true" type="s2:EnvironmentContext" />
+          <s:element minOccurs="1" maxOccurs="1" name="UserIdentifier" nillable="true" type="s2:UserIdentifier" />
+          <s:element minOccurs="1" maxOccurs="1" name="ReferralIdentifier" nillable="true" type="s2:AppointmentIdentifier" />
+          <s:element minOccurs="1" maxOccurs="1" name="CancellationReasonIdentifier" nillable="true" type="s2:ModificationReasonIdentifier" />
+          <s:element minOccurs="1" maxOccurs="1" name="Note" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="CancelReferralResult" />
+    </s:schema>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="RequestReferrerPortalAccessTokenSoapIn">
+    <wsdl:part name="parameters" element="tns:RequestReferrerPortalAccessToken" />
+  </wsdl:message>
+  <wsdl:message name="RequestReferrerPortalAccessTokenSoapOut">
+    <wsdl:part name="parameters" element="tns:RequestReferrerPortalAccessTokenResponse" />
+  </wsdl:message>
+  <wsdl:message name="RequestPatientPortalAccessTokenSoapIn">
+    <wsdl:part name="parameters" element="tns:RequestPatientPortalAccessToken" />
+  </wsdl:message>
+  <wsdl:message name="RequestPatientPortalAccessTokenSoapOut">
+    <wsdl:part name="parameters" element="tns:RequestPatientPortalAccessTokenResponse" />
+  </wsdl:message>
+  <wsdl:message name="RequestPatientPortalAccessTokenWithAppointmentSelectionSoapIn">
+    <wsdl:part name="parameters" element="tns:RequestPatientPortalAccessTokenWithAppointmentSelection" />
+  </wsdl:message>
+  <wsdl:message name="RequestPatientPortalAccessTokenWithAppointmentSelectionSoapOut">
+    <wsdl:part name="parameters" element="tns:RequestPatientPortalAccessTokenWithAppointmentSelectionResponse" />
+  </wsdl:message>
+  <wsdl:message name="RequestPatientPortalAccessTokenWithReferralSelectionSoapIn">
+    <wsdl:part name="parameters" element="tns:RequestPatientPortalAccessTokenWithReferralSelection" />
+  </wsdl:message>
+  <wsdl:message name="RequestPatientPortalAccessTokenWithReferralSelectionSoapOut">
+    <wsdl:part name="parameters" element="tns:RequestPatientPortalAccessTokenWithReferralSelectionResponse" />
+  </wsdl:message>
+  <wsdl:message name="RequestPatientPortalAccessTokenOnNationalNumberSoapIn">
+    <wsdl:part name="parameters" element="tns:RequestPatientPortalAccessTokenOnNationalNumber" />
+  </wsdl:message>
+  <wsdl:message name="RequestPatientPortalAccessTokenOnNationalNumberSoapOut">
+    <wsdl:part name="parameters" element="tns:RequestPatientPortalAccessTokenOnNationalNumberResponse" />
+  </wsdl:message>
+  <wsdl:message name="FindPatientsSoapIn">
+    <wsdl:part name="parameters" element="tns:FindPatients" />
+  </wsdl:message>
+  <wsdl:message name="FindPatientsSoapOut">
+    <wsdl:part name="parameters" element="tns:FindPatientsResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddReferralSoapIn">
+    <wsdl:part name="parameters" element="tns:AddReferral" />
+  </wsdl:message>
+  <wsdl:message name="AddReferralSoapOut">
+    <wsdl:part name="parameters" element="tns:AddReferralResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddPatientSoapIn">
+    <wsdl:part name="parameters" element="tns:AddPatient" />
+  </wsdl:message>
+  <wsdl:message name="AddPatientSoapOut">
+    <wsdl:part name="parameters" element="tns:AddPatientResponse" />
+  </wsdl:message>
+  <wsdl:message name="FindAppointmentsSoapIn">
+    <wsdl:part name="parameters" element="tns:FindAppointments" />
+  </wsdl:message>
+  <wsdl:message name="FindAppointmentsSoapOut">
+    <wsdl:part name="parameters" element="tns:FindAppointmentsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAppointmentSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAppointment" />
+  </wsdl:message>
+  <wsdl:message name="GetAppointmentSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAppointmentResponse" />
+  </wsdl:message>
+  <wsdl:message name="FindReferralsSoapIn">
+    <wsdl:part name="parameters" element="tns:FindReferrals" />
+  </wsdl:message>
+  <wsdl:message name="FindReferralsSoapOut">
+    <wsdl:part name="parameters" element="tns:FindReferralsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetReferralSoapIn">
+    <wsdl:part name="parameters" element="tns:GetReferral" />
+  </wsdl:message>
+  <wsdl:message name="GetReferralSoapOut">
+    <wsdl:part name="parameters" element="tns:GetReferralResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetPatientSoapIn">
+    <wsdl:part name="parameters" element="tns:GetPatient" />
+  </wsdl:message>
+  <wsdl:message name="GetPatientSoapOut">
+    <wsdl:part name="parameters" element="tns:GetPatientResponse" />
+  </wsdl:message>
+  <wsdl:message name="ScheduleAppointmentSoapIn">
+    <wsdl:part name="parameters" element="tns:ScheduleAppointment" />
+  </wsdl:message>
+  <wsdl:message name="ScheduleAppointmentSoapOut">
+    <wsdl:part name="parameters" element="tns:ScheduleAppointmentResponse" />
+  </wsdl:message>
+  <wsdl:message name="ScheduleReferralSoapIn">
+    <wsdl:part name="parameters" element="tns:ScheduleReferral" />
+  </wsdl:message>
+  <wsdl:message name="ScheduleReferralSoapOut">
+    <wsdl:part name="parameters" element="tns:ScheduleReferralResponse" />
+  </wsdl:message>
+  <wsdl:message name="ReScheduleAppointmentSoapIn">
+    <wsdl:part name="parameters" element="tns:ReScheduleAppointment" />
+  </wsdl:message>
+  <wsdl:message name="ReScheduleAppointmentSoapOut">
+    <wsdl:part name="parameters" element="tns:ReScheduleAppointmentResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetResourcesOnAppointmentTypeSoapIn">
+    <wsdl:part name="parameters" element="tns:GetResourcesOnAppointmentType" />
+  </wsdl:message>
+  <wsdl:message name="GetResourcesOnAppointmentTypeSoapOut">
+    <wsdl:part name="parameters" element="tns:GetResourcesOnAppointmentTypeResponse" />
+  </wsdl:message>
+  <wsdl:message name="FindFreeSlotsSoapIn">
+    <wsdl:part name="parameters" element="tns:FindFreeSlots" />
+  </wsdl:message>
+  <wsdl:message name="FindFreeSlotsSoapOut">
+    <wsdl:part name="parameters" element="tns:FindFreeSlotsResponse" />
+  </wsdl:message>
+  <wsdl:message name="CancelAppointmentSoapIn">
+    <wsdl:part name="parameters" element="tns:CancelAppointment" />
+  </wsdl:message>
+  <wsdl:message name="CancelAppointmentSoapOut">
+    <wsdl:part name="parameters" element="tns:CancelAppointmentResponse" />
+  </wsdl:message>
+  <wsdl:message name="CancelReferralSoapIn">
+    <wsdl:part name="parameters" element="tns:CancelReferral" />
+  </wsdl:message>
+  <wsdl:message name="CancelReferralSoapOut">
+    <wsdl:part name="parameters" element="tns:CancelReferralResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ServicesSoap">
+    <wsdl:operation name="RequestReferrerPortalAccessToken">
+      <wsdl:input message="tns:RequestReferrerPortalAccessTokenSoapIn" />
+      <wsdl:output message="tns:RequestReferrerPortalAccessTokenSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RequestPatientPortalAccessToken">
+      <wsdl:input message="tns:RequestPatientPortalAccessTokenSoapIn" />
+      <wsdl:output message="tns:RequestPatientPortalAccessTokenSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RequestPatientPortalAccessTokenWithAppointmentSelection">
+      <wsdl:input message="tns:RequestPatientPortalAccessTokenWithAppointmentSelectionSoapIn" />
+      <wsdl:output message="tns:RequestPatientPortalAccessTokenWithAppointmentSelectionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RequestPatientPortalAccessTokenWithReferralSelection">
+      <wsdl:input message="tns:RequestPatientPortalAccessTokenWithReferralSelectionSoapIn" />
+      <wsdl:output message="tns:RequestPatientPortalAccessTokenWithReferralSelectionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RequestPatientPortalAccessTokenOnNationalNumber">
+      <wsdl:input message="tns:RequestPatientPortalAccessTokenOnNationalNumberSoapIn" />
+      <wsdl:output message="tns:RequestPatientPortalAccessTokenOnNationalNumberSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="FindPatients">
+      <wsdl:input message="tns:FindPatientsSoapIn" />
+      <wsdl:output message="tns:FindPatientsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddReferral">
+      <wsdl:input message="tns:AddReferralSoapIn" />
+      <wsdl:output message="tns:AddReferralSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddPatient">
+      <wsdl:input message="tns:AddPatientSoapIn" />
+      <wsdl:output message="tns:AddPatientSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="FindAppointments">
+      <wsdl:input message="tns:FindAppointmentsSoapIn" />
+      <wsdl:output message="tns:FindAppointmentsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAppointment">
+      <wsdl:input message="tns:GetAppointmentSoapIn" />
+      <wsdl:output message="tns:GetAppointmentSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="FindReferrals">
+      <wsdl:input message="tns:FindReferralsSoapIn" />
+      <wsdl:output message="tns:FindReferralsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetReferral">
+      <wsdl:input message="tns:GetReferralSoapIn" />
+      <wsdl:output message="tns:GetReferralSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPatient">
+      <wsdl:input message="tns:GetPatientSoapIn" />
+      <wsdl:output message="tns:GetPatientSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ScheduleAppointment">
+      <wsdl:input message="tns:ScheduleAppointmentSoapIn" />
+      <wsdl:output message="tns:ScheduleAppointmentSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ScheduleReferral">
+      <wsdl:input message="tns:ScheduleReferralSoapIn" />
+      <wsdl:output message="tns:ScheduleReferralSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ReScheduleAppointment">
+      <wsdl:input message="tns:ReScheduleAppointmentSoapIn" />
+      <wsdl:output message="tns:ReScheduleAppointmentSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetResourcesOnAppointmentType">
+      <wsdl:input message="tns:GetResourcesOnAppointmentTypeSoapIn" />
+      <wsdl:output message="tns:GetResourcesOnAppointmentTypeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="FindFreeSlots">
+      <wsdl:input message="tns:FindFreeSlotsSoapIn" />
+      <wsdl:output message="tns:FindFreeSlotsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CancelAppointment">
+      <wsdl:input message="tns:CancelAppointmentSoapIn" />
+      <wsdl:output message="tns:CancelAppointmentSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CancelReferral">
+      <wsdl:input message="tns:CancelReferralSoapIn" />
+      <wsdl:output message="tns:CancelReferralSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ServicesSoap" type="tns:ServicesSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="RequestReferrerPortalAccessToken">
+      <soap:operation soapAction="http://www.ultragenda.com/UltraGendaBroka/RequestReferrerPortalAccessToken" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RequestPatientPortalAccessToken">
+      <soap:operation soapAction="http://www.ultragenda.com/UltraGendaBroka/RequestPatientPortalAccessToken" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RequestPatientPortalAccessTokenWithAppointmentSelection">
+      <soap:operation soapAction="http://www.ultragenda.com/UltraGendaBroka/RequestPatientPortalAccessTokenWithAppointmentSelection" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RequestPatientPortalAccessTokenWithReferralSelection">
+      <soap:operation soapAction="http://www.ultragenda.com/UltraGendaBroka/RequestPatientPortalAccessTokenWithReferralSelection" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RequestPatientPortalAccessTokenOnNationalNumber">
+      <soap:operation soapAction="http://www.ultragenda.com/UltraGendaBroka/RequestPatientPortalAccessTokenOnNationalNumber" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FindPatients">
+      <soap:operation soapAction="http://www.ultragenda.com/UltraGendaBroka/FindPatients" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddReferral">
+      <soap:operation soapAction="http://www.ultragenda.com/UltraGendaBroka/AddReferral" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddPatient">
+      <soap:operation soapAction="http://www.ultragenda.com/UltraGendaBroka/AddPatient" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FindAppointments">
+      <soap:operation soapAction="http://www.ultragenda.com/UltraGendaBroka/FindAppointments" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAppointment">
+      <soap:operation soapAction="http://www.ultragenda.com/UltraGendaBroka/GetAppointment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FindReferrals">
+      <soap:operation soapAction="http://www.ultragenda.com/UltraGendaBroka/FindReferrals" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetReferral">
+      <soap:operation soapAction="http://www.ultragenda.com/UltraGendaBroka/GetReferral" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPatient">
+      <soap:operation soapAction="http://www.ultragenda.com/UltraGendaBroka/GetPatient" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ScheduleAppointment">
+      <soap:operation soapAction="http://www.ultragenda.com/UltraGendaBroka/ScheduleAppointment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ScheduleReferral">
+      <soap:operation soapAction="http://www.ultragenda.com/UltraGendaBroka/ScheduleReferral" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReScheduleAppointment">
+      <soap:operation soapAction="http://www.ultragenda.com/UltraGendaBroka/ReScheduleAppointment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetResourcesOnAppointmentType">
+      <soap:operation soapAction="http://www.ultragenda.com/UltraGendaBroka/GetResourcesOnAppointmentType" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FindFreeSlots">
+      <soap:operation soapAction="http://www.ultragenda.com/UltraGendaBroka/FindFreeSlots" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CancelAppointment">
+      <soap:operation soapAction="http://www.ultragenda.com/UltraGendaBroka/CancelAppointment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CancelReferral">
+      <soap:operation soapAction="http://www.ultragenda.com/UltraGendaBroka/CancelReferral" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ServicesSoap12" type="tns:ServicesSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="RequestReferrerPortalAccessToken">
+      <soap12:operation soapAction="http://www.ultragenda.com/UltraGendaBroka/RequestReferrerPortalAccessToken" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RequestPatientPortalAccessToken">
+      <soap12:operation soapAction="http://www.ultragenda.com/UltraGendaBroka/RequestPatientPortalAccessToken" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RequestPatientPortalAccessTokenWithAppointmentSelection">
+      <soap12:operation soapAction="http://www.ultragenda.com/UltraGendaBroka/RequestPatientPortalAccessTokenWithAppointmentSelection" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RequestPatientPortalAccessTokenWithReferralSelection">
+      <soap12:operation soapAction="http://www.ultragenda.com/UltraGendaBroka/RequestPatientPortalAccessTokenWithReferralSelection" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RequestPatientPortalAccessTokenOnNationalNumber">
+      <soap12:operation soapAction="http://www.ultragenda.com/UltraGendaBroka/RequestPatientPortalAccessTokenOnNationalNumber" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FindPatients">
+      <soap12:operation soapAction="http://www.ultragenda.com/UltraGendaBroka/FindPatients" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddReferral">
+      <soap12:operation soapAction="http://www.ultragenda.com/UltraGendaBroka/AddReferral" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddPatient">
+      <soap12:operation soapAction="http://www.ultragenda.com/UltraGendaBroka/AddPatient" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FindAppointments">
+      <soap12:operation soapAction="http://www.ultragenda.com/UltraGendaBroka/FindAppointments" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAppointment">
+      <soap12:operation soapAction="http://www.ultragenda.com/UltraGendaBroka/GetAppointment" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FindReferrals">
+      <soap12:operation soapAction="http://www.ultragenda.com/UltraGendaBroka/FindReferrals" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetReferral">
+      <soap12:operation soapAction="http://www.ultragenda.com/UltraGendaBroka/GetReferral" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPatient">
+      <soap12:operation soapAction="http://www.ultragenda.com/UltraGendaBroka/GetPatient" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ScheduleAppointment">
+      <soap12:operation soapAction="http://www.ultragenda.com/UltraGendaBroka/ScheduleAppointment" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ScheduleReferral">
+      <soap12:operation soapAction="http://www.ultragenda.com/UltraGendaBroka/ScheduleReferral" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReScheduleAppointment">
+      <soap12:operation soapAction="http://www.ultragenda.com/UltraGendaBroka/ReScheduleAppointment" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetResourcesOnAppointmentType">
+      <soap12:operation soapAction="http://www.ultragenda.com/UltraGendaBroka/GetResourcesOnAppointmentType" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FindFreeSlots">
+      <soap12:operation soapAction="http://www.ultragenda.com/UltraGendaBroka/FindFreeSlots" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CancelAppointment">
+      <soap12:operation soapAction="http://www.ultragenda.com/UltraGendaBroka/CancelAppointment" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CancelReferral">
+      <soap12:operation soapAction="http://www.ultragenda.com/UltraGendaBroka/CancelReferral" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Services">
+    <wsdl:port name="ServicesSoap" binding="tns:ServicesSoap">
+      <soap:address location="http://52.163.127.229/UltraGendaBrokaWebServices/Services.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ServicesSoap12" binding="tns:ServicesSoap12">
+      <soap12:address location="http://52.163.127.229/UltraGendaBrokaWebServices/Services.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
