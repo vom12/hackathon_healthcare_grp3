@@ -37,7 +37,7 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] });
 bot.recognizer(new builder.LuisRecognizer(LuisModelUrl));
 //bot.dialog('/', dialog);
 bot.dialog('/', [
-    function (session, args, next) {
+    function (session, args) {
         var intent = args.intent;
         var title = builder.EntityRecognizer.findEntity(intent.entities, 'AppointmentType');
         //builder.Prompts.text(session, "Greetings! Please choose your appointment type.");
