@@ -8,7 +8,7 @@ https://aka.ms/abs-node-luis
 var builder = require("botbuilder");
 var botbuilder_azure = require("botbuilder-azure");
 var path = require('path');
-var ugbroka = require('../ugbrokaapi/soapcalls');
+var ugbroka = require('./ugbrokaapi/soapcalls');
 
 var useEmulator = (process.env.NODE_ENV == 'development');
 
