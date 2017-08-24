@@ -1,5 +1,5 @@
 var soap = require('soap');
-var soapWSDL = "./Services.xml";
+var soapWSDL = "../Services.xml";
 
 var addReferrer = function (patientID, department, referralNumber, day) {
 
