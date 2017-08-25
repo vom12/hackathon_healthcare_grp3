@@ -34,6 +34,10 @@ var recognizer = new builder.LuisRecognizer(LuisModelUrl);
 var intents = new builder.IntentDialog({ recognizers: [recognizer] });
 //var dialog = new builder.LuisDialog(LuisModelUrl);
 
+ugbroka.addReferrer('203177', 'CARDIO', 'AAJ123', session.userData.desiredDate, function (res) {
+            console.log(res)
+        });
+
 bot.recognizer(new builder.LuisRecognizer(LuisModelUrl));
 //bot.dialog('/', dialog);
 bot.dialog('/', [
@@ -55,11 +59,7 @@ bot.dialog('/', [
         session.userData.desiredDate = results.response.entity;
         console.log(session.userData.desiredDate)
         session.send("Sending Referal...");
-        ugbroka.addReferrer('203177', 'CARDIO', 'AAA110', session.userData.desiredDate, function (res) {
-            console.log(res)
-        }).then(function(obj){
-            session.send(obj);
-        });
+        
 
         builder.Prompts.choice(session, "Please choose desired hospital and doctor.", ["Site A - Dr. Dickson Martin", "Site A - Dr. Erwing Sandra", "Site B - Dr. Schwarz Marc"], { listStyle: builder.ListStyle.button });
     },
