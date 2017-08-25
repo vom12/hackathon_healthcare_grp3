@@ -57,6 +57,8 @@ bot.dialog('/', [
         session.send("Sending Referal...");
         ugbroka.addReferrer('203177', 'CARDIO', 'AAA110', session.userData.desiredDate, function (res) {
             console.log(res)
+        }).then(function(obj){
+            session.send(obj);
         });
 
         builder.Prompts.choice(session, "Please choose desired hospital and doctor.", ["Site A - Dr. Dickson Martin", "Site A - Dr. Erwing Sandra", "Site B - Dr. Schwarz Marc"], { listStyle: builder.ListStyle.button });
