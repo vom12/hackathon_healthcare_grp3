@@ -34,11 +34,6 @@ var recognizer = new builder.LuisRecognizer(LuisModelUrl);
 var intents = new builder.IntentDialog({ recognizers: [recognizer] });
 //var dialog = new builder.LuisDialog(LuisModelUrl);
 
-console.log('call add referrer')
-ugbroka.addReferrer('203177', 'CARDIO', 'AAJ123', '2017-08-28', function (res) {
-console.log('call add referrer END')
-            console.log(res)
-        });
 
 bot.recognizer(new builder.LuisRecognizer(LuisModelUrl));
 //bot.dialog('/', dialog);
