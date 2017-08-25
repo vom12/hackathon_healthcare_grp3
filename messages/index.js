@@ -34,7 +34,7 @@ var recognizer = new builder.LuisRecognizer(LuisModelUrl);
 var intents = new builder.IntentDialog({ recognizers: [recognizer] });
 //var dialog = new builder.LuisDialog(LuisModelUrl);
 
-ugbroka.addReferrer('203177', 'CARDIO', 'AAJ123', session.userData.desiredDate, function (res) {
+ugbroka.addReferrer('203177', 'CARDIO', 'AAJ123', '2017-08-28', function (res) {
             console.log(res)
         });
 
