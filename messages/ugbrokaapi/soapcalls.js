@@ -1,6 +1,8 @@
 var soap = require('soap');
 var soapWSDL = "./Services.xml";
 
+console.log('Loading soapcalls.js')
+
 var addReferrer = function (patientID, department, referralNumber, day, callback) {
 
     soap.createClient(soapWSDL, function (err, client) {
