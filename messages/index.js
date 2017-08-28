@@ -96,8 +96,9 @@ bot.dialog('/', [
 
     },function (session, results) {
         session.userData.hospDoc = results.response.entity;
-        let timeslot = {};
-       
+        var timeslot = {};
+        var slots = session.userData.doctors[results.response.entity].Slots.Slot 
+        console.log("\nSlots : " + JSON.stringify(slots, null, 2) )
         
         session.userData.doctors[results.response.entity].Slots.Slot.forEach(function(slot){
             
