@@ -107,7 +107,7 @@ bot.dialog('/', [
         })
         console.log("\ntimeslot :\n" + JSON.stringify(timeslot,null,2));
        
-        builder.Prompts.choice(session, "Please choose desired timeslot", timeslot, { listStyle: builder.ListStyle.button });
+        builder.Prompts.choice(session, "Please choose desired timeslot", timeslot, { listStyle: 4});
         //builder.Prompts.number(session, "Hi " + results.response.entity + ", How many years have you been coding?"); 
     },
     function (session, results) {
