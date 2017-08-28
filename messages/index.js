@@ -102,7 +102,7 @@ bot.dialog('/', [
         
         slots.forEach(function(slot){
             
-            console.log("Adding slot " + slot)
+            console.log("Adding slot " + JSON.stringify(slot))
             label = new Date(slot.StartTime).toLocaleString() + " to " + new Date(slot.EndTime).toLocaleTimeString()
             console.log('\n adding ' + label);
             timeslot[label] = slot;
