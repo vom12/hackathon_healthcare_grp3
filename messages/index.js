@@ -55,7 +55,7 @@ bot.dialog('/', [
 
    
         //console.log(JSON.stringify(session.userData,null,2))
-        builder.Prompts.time(session, "Please enter desired date.");
+        builder.Prompts.time(session, "Please enter desired date. format yyyy-mm-dd" );
 
         //builder.Prompts.number(session, "Hi " + results.response.entity + ", How many years have you been coding?"); 
     },
@@ -99,11 +99,11 @@ bot.dialog('/', [
         var timeslot = {};
         var slots = session.userData.doctors[results.response.entity].Slots.Slot 
         console.log("\nSlots : " + JSON.stringify(slots, null, 2) )
-        
+        console.log(slots.length)
         slots.forEach(function(slot){
             
             console.log("Adding slot " + JSON.stringify(slot))
-            label = new Date(slot.StartTime).toLocaleString() + " to " + new Date(slot.EndTime).toLocaleTimeString()
+            label = ""+ new Date(slot.StartTime).toLocaleString('en-US', { hour: 'numeric',minute:'numeric', hour12: true }) + " to " + new Date(slot.EndTime).toLocaleString('en-US', { hour: 'numeric',minute:'numeric', hour12: true })
             console.log('\n adding ' + label);
             timeslot[label] = slot;
 
