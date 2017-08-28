@@ -96,8 +96,8 @@ bot.dialog('/', [
 
     }, function (session, results, next) {
         session.userData.hospDoc = results.response.entity;
-        var timeslot = {};
-        var slots = session.userData.doctors[results.response.entity].Slots.Slot
+        timeslot = {};
+        slots = session.userData.doctors[results.response.entity].Slots.Slot
         console.log("\nSlots : " + JSON.stringify(slots, null, 2))
         console.log(slots.length)
         slots.forEach(function (slot) {
@@ -119,6 +119,7 @@ bot.dialog('/', [
        
         //builder.Prompts.number(session, "Hi " + results.response.entity + ", How many years have you been coding?"); 
     }, function (session, results){
+        console.log("lease choose desired hospital and ")
         builder.Prompts.choice(session, "Please choose desired hospital and doctor.", session.userData.doctors, { listStyle: builder.ListStyle.button });
     },
     function (session, results) {
