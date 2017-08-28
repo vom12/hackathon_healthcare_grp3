@@ -68,16 +68,13 @@ bot.dialog('/', [
             return slots.FindFreeSlotsResult.Steps.Step[0].Programs.Program
         })
         .then( resources => { 
-            session.userData.doctors = []
-            session.userData.doctorsChoice = []
+            session.userData.doctors = {}
             resources.forEach(function(item){
-
                 session.userData.doctors[item.Resource.Name + " of " + item.Site.Name] = item;
-                session.userData.doctorsChoice.push(item.Resource.Name + " of " + item.Site.Name);
             });
            
         }).then(function(){
-            console.log(session.userData.doctors);
+           // console.log(session.userData.doctors);
             next();
         })
         .catch( function(err){
@@ -92,10 +89,13 @@ bot.dialog('/', [
 
     },function (session, results) {
         session.userData.hospDoc = results.response.entity;
-        var timeslot = [];
+        const timeslot = {};
+       
         
         session.userData.doctors[results.response.entity].Slots.Slot.forEach(function(slot){
-            timeslot[new Date(slot.StartTime).toLocaleString() + " to " + new Date(slot.EndTime).toLocaleTimeString() ] = slot;
+            label = new Date(slot.StartTime).toLocaleString() + " to " + new Date(slot.EndTime).toLocaleTimeString()
+            timeslot[label] = slot;
+            
         })
         
        
