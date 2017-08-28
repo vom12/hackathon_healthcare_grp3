@@ -47,7 +47,7 @@ bot.dialog('/', [
     },
     function (session, results) {
         session.userData.appointmentType = results.response.entity;
-        console.log(JSON.stringify(session.userData,null,2))
+        //console.log(JSON.stringify(session.userData,null,2))
         builder.Prompts.time(session, "Please enter desired date.");
 
         //builder.Prompts.number(session, "Hi " + results.response.entity + ", How many years have you been coding?"); 
@@ -68,7 +68,7 @@ bot.dialog('/', [
             return slots.FindFreeSlotsResult.Steps.Step[0].Programs.Program
         })
         .then( resources => { 
-            session.userData.doctors = {}
+            session.userData.doctors = {};
             resources.forEach(function(item){
                 session.userData.doctors[item.Resource.Name + " of " + item.Site.Name] = item;
             });
@@ -89,15 +89,16 @@ bot.dialog('/', [
 
     },function (session, results) {
         session.userData.hospDoc = results.response.entity;
-        const timeslot = {};
+        let timeslot = {};
        
         
         session.userData.doctors[results.response.entity].Slots.Slot.forEach(function(slot){
+            
             label = new Date(slot.StartTime).toLocaleString() + " to " + new Date(slot.EndTime).toLocaleTimeString()
             timeslot[label] = slot;
             
         })
-        
+        console.log("\ntimeslot :\n" + JSON.stringify(timeslot,null,2));
        
         builder.Prompts.choice(session, "Please choose desired timeslot", timeslot, { listStyle: builder.ListStyle.button });
         //builder.Prompts.number(session, "Hi " + results.response.entity + ", How many years have you been coding?"); 
