@@ -1,6 +1,6 @@
 var soap = require('soap');
 var path = require('path');
-var soapWSDL = path.join(__dirname, './Services.xml');
+var soapWSDL = path.join(__dirname, '../Services.xml');
 
 
 
