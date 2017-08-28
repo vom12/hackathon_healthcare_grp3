@@ -102,14 +102,14 @@ bot.dialog('/', [
         
         slots.forEach(function(slot){
             
-            console.log('adding')
+            console.log("Adding slot " + slot)
             label = new Date(slot.StartTime).toLocaleString() + " to " + new Date(slot.EndTime).toLocaleTimeString()
             console.log('\n adding ' + label);
             timeslot[label] = slot;
 
         });
 
-        console.log("\ntimeslot :\n" + JSON.stringify(timeslot,null,2));
+        console.log("\ntimeslot :\n" + timeslot);
        
         builder.Prompts.choice(session, "Please choose desired timeslot", timeslot, { listStyle: 4});
         //builder.Prompts.number(session, "Hi " + results.response.entity + ", How many years have you been coding?"); 
