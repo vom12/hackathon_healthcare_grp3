@@ -100,12 +100,15 @@ bot.dialog('/', [
         var slots = session.userData.doctors[results.response.entity].Slots.Slot 
         console.log("\nSlots : " + JSON.stringify(slots, null, 2) )
         
-        session.userData.doctors[results.response.entity].Slots.Slot.forEach(function(slot){
+        slots.forEach(function(slot){
             
+            console.log('adding')
             label = new Date(slot.StartTime).toLocaleString() + " to " + new Date(slot.EndTime).toLocaleTimeString()
+            console.log('\n adding ' + label);
             timeslot[label] = slot;
-            
-        })
+
+        });
+
         console.log("\ntimeslot :\n" + JSON.stringify(timeslot,null,2));
        
         builder.Prompts.choice(session, "Please choose desired timeslot", timeslot, { listStyle: 4});
