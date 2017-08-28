@@ -44,76 +44,76 @@ bot.dialog('/', [
         session.sendTyping(); //...typing
         //builder.Prompts.text(session, "Greetings! Please choose your appointment type.");
 
-  
-      
+
+
 
         builder.Prompts.choice(session, "Greetings! Please choose your appointment type.", ["Cardio"], { listStyle: builder.ListStyle.button })
-        
+
     },
     function (session, results) {
         session.userData.appointmentType = results.response.entity;
 
-   
+
         //console.log(JSON.stringify(session.userData,null,2))
-        builder.Prompts.time(session, "Please enter desired date. format yyyy-mm-dd" );
+        builder.Prompts.time(session, "Please enter desired date. format yyyy-mm-dd");
 
         //builder.Prompts.number(session, "Hi " + results.response.entity + ", How many years have you been coding?"); 
     },
     function (session, results, next) {
-       
+
         session.userData.desiredDate = results.response.entity;
         console.log(session.userData.desiredDate)
         session.sendTyping(); //...typing
 
-        ugbroka.addReferrer('203180', session.userData.appointmentType , randomReference(), session.userData.desiredDate ).then( (referrer) => {
+        ugbroka.addReferrer('203180', session.userData.appointmentType, randomReference(), session.userData.desiredDate).then((referrer) => {
             //console.log(referrer);
             //console.log('Calling slots')
             return ugbroka.findFreeSlots(referrer.order.Application, referrer.order.Number);
         })
-        .then( slots => { 
-            //console.log(slots.FindFreeSlotsResult.Steps.Step[0].Programs);
-            return slots.FindFreeSlotsResult.Steps.Step[0].Programs.Program
-        })
-        .then( resources => { 
-            session.userData.doctors = {};
-            resources.forEach(function(item){
-                session.userData.doctors[item.Resource.Name + " of " + item.Site.Name] = item;
-            });
-           
-        }).then(function(){
-           // console.log(session.userData.doctors);
-            next();
-        })
-        .catch( function(err){
-            console.log(err);
-        });
-        
+            .then(slots => {
+                //console.log(slots.FindFreeSlotsResult.Steps.Step[0].Programs);
+                return slots.FindFreeSlotsResult.Steps.Step[0].Programs.Program
+            })
+            .then(resources => {
+                session.userData.doctors = {};
+                resources.forEach(function (item) {
+                    session.userData.doctors[item.Resource.Name + " of " + item.Site.Name] = item;
+                });
 
-        
-    },function(session,results) {
+            }).then(function () {
+                // console.log(session.userData.doctors);
+                next();
+            })
+            .catch(function (err) {
+                console.log(err);
+            });
+
+
+
+    }, function (session, results) {
 
         builder.Prompts.choice(session, "Please choose desired hospital and doctor.", session.userData.doctors, { listStyle: builder.ListStyle.button });
 
-    },function (session, results) {
+    }, function (session, results) {
         session.userData.hospDoc = results.response.entity;
         var timeslot = {};
-        var slots = session.userData.doctors[results.response.entity].Slots.Slot 
-        console.log("\nSlots : " + JSON.stringify(slots, null, 2) )
+        var slots = session.userData.doctors[results.response.entity].Slots.Slot
+        console.log("\nSlots : " + JSON.stringify(slots, null, 2))
         console.log(slots.length)
-        slots.forEach(function(slot){
-            
-           // console.log("Adding slot " + JSON.stringify(slot))
-            console.log("Adding slot " +  new Date(slot.StartTime).toLocaleString('en-US', { hour: 'numeric',minute:'numeric', hour12: true }) + " XX " + slot.EndTime);
+        slots.forEach(function (slot) {
 
-            label = ""+ new Date(slot.StartTime).toLocaleString('en-US', { hour: 'numeric',minute:'numeric', hour12: true }) + " to " + new Date(slot.EndTime).toLocaleString('en-US', { hour: 'numeric',minute:'numeric', hour12: true })
+            // console.log("Adding slot " + JSON.stringify(slot))
+            console.log("Time in Adding slot " + new Date(slot.StartTime).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }) + " XX " +  new Date(slot.EndTime).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }));
+
+            label = "Time : " + new Date(slot.StartTime).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }) + " to " + new Date(slot.EndTime).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
             console.log('\n adding ' + label);
             timeslot[label] = slot;
 
         });
 
         console.log("\ntimeslot :\n" + timeslot);
-       
-        builder.Prompts.choice(session, "Please choose desired timeslot", timeslot, { listStyle: 4});
+
+        builder.Prompts.choice(session, "Please choose desired timeslot", timeslot, { listStyle: 4 });
         //builder.Prompts.number(session, "Hi " + results.response.entity + ", How many years have you been coding?"); 
     },
     function (session, results) {
@@ -159,11 +159,11 @@ if (useEmulator) {
 
 
 //returns ranndom ABC123
-let randomReference = function() {
+let randomReference = function () {
 
-    var randomRef = Math.random().toString(35).replace(/[^a-z]/g,'').substring(0,3).replace(/.*/g, function(v){return v.toUpperCase()})
-    
-    randomRef = randomRef + (Math.floor(Math.random()*900) + 100);
+    var randomRef = Math.random().toString(35).replace(/[^a-z]/g, '').substring(0, 3).replace(/.*/g, function (v) { return v.toUpperCase() })
+
+    randomRef = randomRef + (Math.floor(Math.random() * 900) + 100);
 
     return randomRef;
 }
