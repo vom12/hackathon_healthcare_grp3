@@ -56,6 +56,10 @@ bot.dialog('/', [
         session.userData.appointmentType = results.response.entity;
 
         if(session.userData.desiredDate) {
+            console.log('skipping');
+
+            console.log(session.userData);
+            
             next();
         }
         //console.log(JSON.stringify(session.userData,null,2))
