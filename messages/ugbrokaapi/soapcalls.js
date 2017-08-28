@@ -4,7 +4,7 @@ var soapWSDL = path.join(__dirname, './Services.xml');
 
 console.log('Loading soapcalls.js' + soapWSDL)
 
-var addReferrer = function (patientID, department, referralNumber, day, callback) {
+var addReferrer = function (patientID, department, referralNumber, day) {
 
     soap.createClient(soapWSDL, function (err, client) {
         if (err) {

@@ -8,7 +8,7 @@ https://aka.ms/abs-node-luis
 var builder = require("botbuilder");
 var botbuilder_azure = require("botbuilder-azure");
 var path = require('path');
-var ugbroka = require('./ugbrokaapi/soapcalls');
+var ugbroka = require('./ugbrokaapi/testPromise');
 
 var useEmulator = (process.env.NODE_ENV == 'development');
 
@@ -57,11 +57,19 @@ bot.dialog('/', [
         console.log(session.userData.desiredDate)
         session.sendTyping(); //...typing
 
-        ugbroka.addReferrer('203180', session.userData.appointmentType, randomReference(), session.userData.desiredDate, function(err,result){
-            if(!err) {
-                console.log(result);
-            }
-        } )
+        ugbroka.addReferrer('203180', session.userData.appointmentType , randomReference(), session.userData.desiredDate ).then( (referrer) => {
+            console.log(referrer);
+            console.log('Calling slots')
+            return ugbroka.findFreeSlots(referrer.order.Application, referrer.order.Number);
+        })
+        .then( slots => { 
+            console.log(slots.FindFreeSlotsResult.Steps.Step[0].Programs);
+            return slots.FindFreeSlotsResult.Steps.Step[0].Programs.Program
+        })
+        .then( resources => { console.log(JSON.stringify(resources,null,4))})
+        .catch( function(err){
+            console.log(err);
+        });
         
 
         builder.Prompts.choice(session, "Please choose desired hospital and doctor.", ["Site A - Dr. Dickson Martin", "Site A - Dr. Erwing Sandra", "Site B - Dr. Schwarz Marc"], { listStyle: builder.ListStyle.button });
@@ -139,7 +147,4 @@ let randomReference = function() {
     return randomRef;
 }
 
-ugbroka.addReferrer('203180', 'CARDIO', randomReference(), '2017-08-28')
-    .then( (results) => {
-        console.log(results.json());
-    });
+

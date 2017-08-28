@@ -8,7 +8,8 @@ console.log('Loading soapcalls.js' + soapWSDL)
 
 var addReferrer = function (patientID, department, referralNumber, day, callback) {
 
-    return new Promise(resolve => {
+    return new Promise( (resolve,reject) =>  {
+
         soap.createClient(soapWSDL, function (err, client) {
             if (err) {
                 console.log(err)
@@ -54,12 +55,13 @@ var addReferrer = function (patientID, department, referralNumber, day, callback
 
                 if (!err) {
                     appointment = result.AddReferralResult.Referrals.Appointment[0];
+                    //console.log(appointment)
 
                     data = {
                         status: appointment.AppointmentStatus,
                         order: appointment.Order,
                         BookPeriod: appointment.BookPeriod,
-                        Department: appointment.department
+                        Department: appointment.Department.Abbreviation
                     }
                     
                     resolve(data);
@@ -119,7 +121,7 @@ var findFreeSlots = function (app, orderNumber) {
     
                 if (!err) {
                     resolve(result);
-                    console.log(JSON.stringify(result, null, 2));
+                    //console.log(JSON.stringify(result, null, 2));
                 } else {
                     //console.log("ERR : " + JSON.stringify(err));
                     console.log(client.lastRequest)
