@@ -52,7 +52,8 @@ bot.dialog('/', [
 
         //builder.Prompts.number(session, "Hi " + results.response.entity + ", How many years have you been coding?"); 
     },
-    function (session, results) {
+    function (session, results, next) {
+       
         session.userData.desiredDate = results.response.entity;
         console.log(session.userData.desiredDate)
         session.sendTyping(); //...typing
@@ -66,32 +67,34 @@ bot.dialog('/', [
             console.log(slots.FindFreeSlotsResult.Steps.Step[0].Programs);
             return slots.FindFreeSlotsResult.Steps.Step[0].Programs.Program
         })
-        .then( resources => { console.log(JSON.stringify(resources,null,4))})
+        .then( resources => { 
+            
+            resources.forEach(function(item){
+
+                session.userData.doctors[item.Resource.Name + " of " + item.Site.name] = item;
+
+            });
+            next();
+        })
         .catch( function(err){
             console.log(err);
         });
         
 
-        builder.Prompts.choice(session, "Please choose desired hospital and doctor.", ["Site A - Dr. Dickson Martin", "Site A - Dr. Erwing Sandra", "Site B - Dr. Schwarz Marc"], { listStyle: builder.ListStyle.button });
-    },
+        
+    },function(session,results) {
 
-    function (session, results) {
+        builder.Prompts.choice(session, "Please choose desired hospital and doctor.", session.userData.doctors, { listStyle: builder.ListStyle.button });
+
+    },function (session, results) {
         session.userData.hospDoc = results.response.entity;
         var timeslot = [];
-
-        if (results.response.entity) {
-            switch (results.response.entity) {
-                case "Site A - Dr. Dickson Martin":
-                    timeslot = ["8:00-8:30", "8:30-9:00", "9:00-9:30"];
-                    break;
-                case "Site A - Dr. Erwing Sandra":
-                    timeslot = ["8:00-8:30", "8:30-9:00", "9:00-9:30"];
-                    break;
-                case "Site B - Dr. Schwarz Marc":
-                    timeslot = ["8:00-8:30", "8:30-9:00", "9:00-9:30"];
-                    break;
-            }
-        }
+        
+        session.userData.doctors[results.response.entity].Slots.Slot.forEach(function(slot){
+            timeslot[new Date(slot.StartTime).toLocaleString() + " to " + new Date(slot.EndTime).toLocaleTimeString() ] = slot;
+        })
+        
+       
         builder.Prompts.choice(session, "Please choose desired timeslot", timeslot, { listStyle: builder.ListStyle.button });
         //builder.Prompts.number(session, "Hi " + results.response.entity + ", How many years have you been coding?"); 
     },
