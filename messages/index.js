@@ -39,20 +39,16 @@ bot.recognizer(new builder.LuisRecognizer(LuisModelUrl));
 //bot.dialog('/', dialog);
 bot.dialog('/', [
     function (session, args) {
-        var intent = args.intent;
-        var title = builder.EntityRecognizer.findEntity(intent.entities, 'AppointmentType');
+       
         session.sendTyping(); //...typing
         //builder.Prompts.text(session, "Greetings! Please choose your appointment type.");
-
-
-
 
         builder.Prompts.choice(session, "Greetings! Please choose your appointment type.", ["Cardio"], { listStyle: builder.ListStyle.button })
 
     },
     function (session, results) {
         session.userData.appointmentType = results.response.entity;
-
+        session.sendTyping(); //...typing
 
         //console.log(JSON.stringify(session.userData,null,2))
         builder.Prompts.time(session, "Please enter desired date. format yyyy-mm-dd");
@@ -68,6 +64,7 @@ bot.dialog('/', [
         ugbroka.addReferrer('203180', session.userData.appointmentType, randomReference(), session.userData.desiredDate).then((referrer) => {
             //console.log(referrer);
             //console.log('Calling slots')
+            session.userData.orderNumber = referrer.order.Number;
             return ugbroka.findFreeSlots(referrer.order.Application, referrer.order.Number);
         })
             .then(slots => {
@@ -90,44 +87,49 @@ bot.dialog('/', [
 
 
 
-    }, function (session, results) {
-
+    }, function (session, results, next) {
+       
         builder.Prompts.choice(session, "Please choose desired hospital and doctor.", session.userData.doctors, { listStyle: builder.ListStyle.button });
 
-    }, function (session, results) {
+    }, function (session, results, next) {
         session.userData.hospDoc = results.response.entity;
-        timeslot = {};
-        
-        slots = session.userData.doctors[results.response.entity].Slots.Slot
+        let timeslot = {};
+        session.sendTyping(); //...typing
+        let slots = session.userData.doctors[results.response.entity].Slots.Slot
         console.log("\nSlots : " + JSON.stringify(slots, null, 2))
         console.log(slots.length)
-        slots.forEach(function (slot) {
+        slots.forEach(function (slot) { 
 
             // console.log("Adding slot " + JSON.stringify(slot))
             console.log("Time in Adding slot " + new Date(slot.StartTime).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }) + " XX " +  new Date(slot.EndTime).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }));
 
-            label = "Time : " + new Date(slot.StartTime).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
+            var label = new Date(slot.StartTime).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }) + " - "+ new Date(slot.EndTime).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
             console.log('\n adding ' + label);
+            
             timeslot[label] = slot;
 
         });
 
-        session.userData.timeslot = timeslot
+        session.userData.timeslot = timeslot;
+        next();
 
-        if( session.userData.timeslot) {
-            next();
-        }
-       
-        //builder.Prompts.number(session, "Hi " + results.response.entity + ", How many years have you been coding?"); 
     }, function (session, results){
-        console.log("lease choose desired hospital and ")
-        builder.Prompts.choice(session, "Please choose desired hospital and doctor.", session.userData.doctors, { listStyle: builder.ListStyle.button });
+      
+        builder.Prompts.choice(session, "Please choose desired hospital and doctor.", session.userData.timeslot, { listStyle: builder.ListStyle.button });
     },
     function (session, results) {
-        session.userData.timeslot = results.response.entity;
+        let startAndEnd = results.response.entity;
+        let slot = session.userData.timeslot[startAndEnd];
+        
+        session.sendTyping(); //...typing
+        ugbroka.scheduleReferral('HACK',session.userData.orderNumber, slot ).then(res => {
+            console.log(res) 
+            session.endDialog("Appointment Created: <br>Appointment Type: " 
+            + session.userData.appointmentType + "<br>Site and Doctor: " + session.userData.hospDoc + "<br>Date Time: " + startAndEnd);
+        })
 
-        session.endDialog("Appointment Details: \n Appointment Type: " + session.userData.appointmentType + "\n Hospital and Doctor: " + session.userData.hospDoc + "\n Date: " + session.userData.desiredDate + " - " + session.userData.timeslot);
     }
+
 ]).triggerAction({ matches: 'ScheduleAppointment' });
 
 //dialog.on('ScheduleAppointment', [
@@ -146,6 +148,7 @@ intents.onDefault((session) => {
 //bot.dialog('/', intents);    
 
 if (useEmulator) {
+    console.log('with emulator')
     var restify = require('restify');
     var server = restify.createServer();
     server.listen(3978, function () {
@@ -153,6 +156,7 @@ if (useEmulator) {
     });
     server.post('/api/messages', connector.listen());
 } else {
+    console.log('no emulator')
     var listener = connector.listen();
     var withLogging = function (context, req) {
         console.log = context.log;

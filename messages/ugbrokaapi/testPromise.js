@@ -138,39 +138,68 @@ var findFreeSlots = function (app, orderNumber) {
  
 }
 
-var scheduleReferral = function (app, orderNumber, slotId) {
+var scheduleReferral = function (app, orderNumber, slot) {
 
-    arg = {
-        "ult:scheduleReferralRequest": {
-            "ns:EnvironmentContext": {
-                "ns:DestinationEnvironmentCode": "ug",
-                "ns:SourceEnvironmentCode": "TEST",
-                "ns:SourceEnvironmentType": "External"
-            },
-            "ns:UserIdentifier": {
-                "ns:IdentifierName": "Login",
-                "ns:IdentifierValue": "SAJE"
-            },
-            "ns:ReferralIdentifier": {
-                "ns:IdentifierName": "Order",
-                "ns:IdentifierValue": "HACK|HACK002"
-            },
-            "ns:SlotIdentifiers": {
-                "ns:SlotIdentifier": {
-                    "ns:InternalId": "3207537",
-                    "ns:StartDateTime": "2017-08-25T11:20:00",
-                    "ns:EndDateTime": "2017-08-25T12:00:00",
-                    "ns:StepSequence": "1"
+   
+
+
+    return new Promise(resolve => {
+        soap.createClient(soapWSDL, function (err, client) {
+            if (err) {
+                console.log(err)
+            }
+    
+            arg = {
+                "scheduleReferralRequest": {
+                    "EnvironmentContext": {
+                        "DestinationEnvironmentCode": "ug",
+                        "SourceEnvironmentCode": "TEST",
+                        "SourceEnvironmentType": "External"
+                    },
+                    "UserIdentifier": {
+                        "IdentifierName": "Login",
+                        "IdentifierValue": "SAJE"
+                    },
+                    "ReferralIdentifier": {
+                        "IdentifierName": "Order",
+                        "IdentifierValue": app+ "|" + orderNumber
+                    },
+                    "SlotIdentifiers": {
+                        "SlotIdentifier": {
+                            "InternalId": slot.Id,
+                            "StartDateTime": slot.StartTime,
+                            "EndDateTime": slot.EndTime,
+                            "StepSequence": slot.StepSequence
+                        }
+                    },
+                    "Note": "FROM CHAT BOT"
                 }
-            },
-            "ns:Note": "FROM CHAT BOT"
-        }
-    }
+            }
+    
+    
+            client.Services.ServicesSoap.ScheduleReferral(arg, function (err, result, raw, soapHeader) {
+    
+                if (!err) {
+                    resolve(result);
+                    //console.log(JSON.stringify(result, null, 2));
+                } else {
+                    //console.log("ERR : " + JSON.stringify(err));
+                    console.log(client.lastRequest)
+    
+                }
+    
+            });
+    
+    
+    
+        });
+    });
 
 }
 
 module.exports = {
     findFreeSlots: findFreeSlots,
-    addReferrer: addReferrer
+    addReferrer: addReferrer,
+    scheduleReferral:scheduleReferral
 
 }
