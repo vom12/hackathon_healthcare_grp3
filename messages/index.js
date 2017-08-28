@@ -94,7 +94,7 @@ bot.dialog('/', [
 
         builder.Prompts.choice(session, "Please choose desired hospital and doctor.", session.userData.doctors, { listStyle: builder.ListStyle.button });
 
-    }, function (session, results) {
+    }, function (session, results, next) {
         session.userData.hospDoc = results.response.entity;
         var timeslot = {};
         var slots = session.userData.doctors[results.response.entity].Slots.Slot
@@ -111,10 +111,15 @@ bot.dialog('/', [
 
         });
 
-        console.log("\ntimeslot :\n" + timeslot);
+        session.userData.timeslot = timeslot
 
-        builder.Prompts.choice(session, "Please choose desired timeslot", timeslot, { listStyle: 4 });
+        if( session.userData.timeslot) {
+            next();
+        }
+       
         //builder.Prompts.number(session, "Hi " + results.response.entity + ", How many years have you been coding?"); 
+    }, function (session, results){
+        builder.Prompts.choice(session, "Please choose desired hospital and doctor.", session.userData.doctors, { listStyle: builder.ListStyle.button });
     },
     function (session, results) {
         session.userData.timeslot = results.response.entity;
