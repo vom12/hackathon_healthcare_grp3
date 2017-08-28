@@ -81,7 +81,7 @@ bot.dialog('/', [
                 });
 
             }).then(function () {
-                // console.log(session.userData.doctors);
+                console.log("calling next()")
                 next();
             })
             .catch(function (err) {
@@ -94,9 +94,10 @@ bot.dialog('/', [
 
         builder.Prompts.choice(session, "Please choose desired hospital and doctor.", session.userData.doctors, { listStyle: builder.ListStyle.button });
 
-    }, function (session, results, next) {
+    }, function (session, results) {
         session.userData.hospDoc = results.response.entity;
         timeslot = {};
+        
         slots = session.userData.doctors[results.response.entity].Slots.Slot
         console.log("\nSlots : " + JSON.stringify(slots, null, 2))
         console.log(slots.length)
