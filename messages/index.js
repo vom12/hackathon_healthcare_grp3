@@ -59,12 +59,12 @@ bot.dialog('/', [
         session.sendTyping(); //...typing
 
         ugbroka.addReferrer('203180', session.userData.appointmentType , randomReference(), session.userData.desiredDate ).then( (referrer) => {
-            console.log(referrer);
-            console.log('Calling slots')
+            //console.log(referrer);
+            //console.log('Calling slots')
             return ugbroka.findFreeSlots(referrer.order.Application, referrer.order.Number);
         })
         .then( slots => { 
-            console.log(slots.FindFreeSlotsResult.Steps.Step[0].Programs);
+            //console.log(slots.FindFreeSlotsResult.Steps.Step[0].Programs);
             return slots.FindFreeSlotsResult.Steps.Step[0].Programs.Program
         })
         .then( resources => { 
@@ -74,6 +74,9 @@ bot.dialog('/', [
                 session.userData.doctors[item.Resource.Name + " of " + item.Site.Name] = item;
 
             });
+           
+        }).then(function(){
+            console.log(session.userData.doctors);
             next();
         })
         .catch( function(err){
