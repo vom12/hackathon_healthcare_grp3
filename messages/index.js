@@ -43,10 +43,21 @@ bot.dialog('/', [
         var title = builder.EntityRecognizer.findEntity(intent.entities, 'AppointmentType');
         session.sendTyping(); //...typing
         //builder.Prompts.text(session, "Greetings! Please choose your appointment type.");
+
+        if(session.userData.desiredDate) {
+            next();
+        }
+      
+
         builder.Prompts.choice(session, "Greetings! Please choose your appointment type.", ["Cardio"], { listStyle: builder.ListStyle.button })
+        
     },
     function (session, results) {
         session.userData.appointmentType = results.response.entity;
+
+        if(session.userData.desiredDate) {
+            next();
+        }
         //console.log(JSON.stringify(session.userData,null,2))
         builder.Prompts.time(session, "Please enter desired date.");
 
