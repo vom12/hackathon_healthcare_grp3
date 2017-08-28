@@ -69,10 +69,11 @@ bot.dialog('/', [
         })
         .then( resources => { 
             session.userData.doctors = []
+            session.userData.doctorsChoice = []
             resources.forEach(function(item){
 
                 session.userData.doctors[item.Resource.Name + " of " + item.Site.Name] = item;
-
+                session.userData.doctorsChoice.push(item.Resource.Name + " of " + item.Site.Name);
             });
            
         }).then(function(){
