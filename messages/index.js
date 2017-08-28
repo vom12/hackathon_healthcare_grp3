@@ -38,7 +38,7 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] });
 bot.recognizer(new builder.LuisRecognizer(LuisModelUrl));
 //bot.dialog('/', dialog);
 bot.dialog('/', [
-    function (session, args) {
+    function (session, args,next) {
         var intent = args.intent;
         var title = builder.EntityRecognizer.findEntity(intent.entities, 'AppointmentType');
         session.sendTyping(); //...typing
@@ -53,7 +53,7 @@ bot.dialog('/', [
         builder.Prompts.choice(session, "Greetings! Please choose your appointment type.", ["Cardio"], { listStyle: builder.ListStyle.button })
         
     },
-    function (session, results) {
+    function (session, results, next) {
         session.userData.appointmentType = results.response.entity;
 
         if(session.userData.desiredDate) {
