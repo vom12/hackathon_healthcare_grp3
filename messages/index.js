@@ -44,7 +44,8 @@ bot.dialog('/', [
         session.sendTyping(); //...typing
         //builder.Prompts.text(session, "Greetings! Please choose your appointment type.");
 
-        if(session.userData.desiredDate) {
+        if(session.userData.appointmentType) {
+            console.log('skipping appointmentType' + session.userData.appointmentType);
             next();
         }
       
@@ -56,10 +57,10 @@ bot.dialog('/', [
         session.userData.appointmentType = results.response.entity;
 
         if(session.userData.desiredDate) {
-            console.log('skipping');
+            console.log('skipping desiredDate ' + session.userData.desiredDate);
 
             console.log(session.userData);
-            
+
             next();
         }
         //console.log(JSON.stringify(session.userData,null,2))
