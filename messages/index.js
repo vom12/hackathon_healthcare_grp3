@@ -38,31 +38,22 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] });
 bot.recognizer(new builder.LuisRecognizer(LuisModelUrl));
 //bot.dialog('/', dialog);
 bot.dialog('/', [
-    function (session, args,next) {
+    function (session, args) {
         var intent = args.intent;
         var title = builder.EntityRecognizer.findEntity(intent.entities, 'AppointmentType');
         session.sendTyping(); //...typing
         //builder.Prompts.text(session, "Greetings! Please choose your appointment type.");
 
-        if(session.userData.appointmentType) {
-            console.log('skipping appointmentType' + session.userData.appointmentType);
-            next();
-        }
+  
       
 
         builder.Prompts.choice(session, "Greetings! Please choose your appointment type.", ["Cardio"], { listStyle: builder.ListStyle.button })
         
     },
-    function (session, results, next) {
+    function (session, results) {
         session.userData.appointmentType = results.response.entity;
 
-        if(session.userData.desiredDate) {
-            console.log('skipping desiredDate ' + session.userData.desiredDate);
-
-            console.log(session.userData);
-
-            next();
-        }
+   
         //console.log(JSON.stringify(session.userData,null,2))
         builder.Prompts.time(session, "Please enter desired date.");
 
