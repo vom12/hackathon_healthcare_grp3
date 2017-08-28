@@ -68,10 +68,10 @@ bot.dialog('/', [
             return slots.FindFreeSlotsResult.Steps.Step[0].Programs.Program
         })
         .then( resources => { 
-            
+            session.userData.doctors = []
             resources.forEach(function(item){
 
-                session.userData.doctors[item.Resource.Name + " of " + item.Site.name] = item;
+                session.userData.doctors[item.Resource.Name + " of " + item.Site.Name] = item;
 
             });
             next();
