@@ -41,7 +41,7 @@ bot.dialog('/', [
     function (session, args) {
         var intent = args.intent;
         var title = builder.EntityRecognizer.findEntity(intent.entities, 'AppointmentType');
-        session.send("Appointment...");
+        session.sendTyping(); //...typing
         //builder.Prompts.text(session, "Greetings! Please choose your appointment type.");
         builder.Prompts.choice(session, "Greetings! Please choose your appointment type.", ["Cardio"], { listStyle: builder.ListStyle.button })
     },
@@ -55,7 +55,13 @@ bot.dialog('/', [
     function (session, results) {
         session.userData.desiredDate = results.response.entity;
         console.log(session.userData.desiredDate)
-        session.send("Sending Referal...");
+        session.sendTyping(); //...typing
+
+        ugbroka.addReferrer('203180', session.userData.appointmentType, randomReference(), session.userData.desiredDate, function(err,result){
+            if(!err) {
+                console.log(result);
+            }
+        } )
         
 
         builder.Prompts.choice(session, "Please choose desired hospital and doctor.", ["Site A - Dr. Dickson Martin", "Site A - Dr. Erwing Sandra", "Site B - Dr. Schwarz Marc"], { listStyle: builder.ListStyle.button });
@@ -119,3 +125,21 @@ if (useEmulator) {
 
     module.exports = { default: withLogging }
 }
+
+
+
+
+//returns ranndom ABC123
+let randomReference = function() {
+
+    var randomRef = Math.random().toString(35).replace(/[^a-z]/g,'').substring(0,3).replace(/.*/g, function(v){return v.toUpperCase()})
+    
+    randomRef = randomRef + (Math.floor(Math.random()*900) + 100);
+
+    return randomRef;
+}
+
+ugbroka.addReferrer('203180', 'CARDIO', randomReference(), '2017-08-28')
+    .then( (results) => {
+        console.log(results.json());
+    });

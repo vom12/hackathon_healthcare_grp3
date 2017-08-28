@@ -47,7 +47,7 @@ var addReferrer = function (patientID, department, referralNumber, day, callback
             }
         }
 
-        client.Services.ServicesSoap.AddReferral(args, function (err, result, raw, soapHeader) {
+        client.Services.ServicesSoap.AddReferral(args, function (err, result, raw, soapHeader, callback) {
 
             if (!err) {
                 appointment = result.AddReferralResult.Referrals.Appointment[0];
@@ -58,8 +58,8 @@ var addReferrer = function (patientID, department, referralNumber, day, callback
                     BookPeriod: appointment.BookPeriod,
                     Department: appointment.department
                 }
-                
-                
+
+
                 console.log(JSON.stringify(data));
                 console.log("CALLING FIND FREE SLOTS")
 
@@ -69,9 +69,11 @@ var addReferrer = function (patientID, department, referralNumber, day, callback
                 console.log('ERROR : \n\n' + JSON.stringify(err, null, 2));
                 console.log('RAW' + raw);
                 console.log('REQUEST' + client.lastRequest)
+
+                callback(err, null)
             }
 
-        },{proxy: "http://web-proxy.phil.hp.com:8088"});
+        }, { proxy: "http://web-proxy.phil.hp.com:8088" });
 
 
 
@@ -80,12 +82,13 @@ var addReferrer = function (patientID, department, referralNumber, day, callback
 }//(203180,'CARDIO','HACK016','2017-08-26');
 
 
-var findFreeSlots = function (app, orderNumber, c) {
+var findFreeSlots = function (app, orderNumber, callback) {
 
-   
+
     soap.createClient(soapWSDL, function (err, client) {
         if (err) {
             console.log(err)
+            callback(err, null)
         }
 
 
@@ -118,23 +121,20 @@ var findFreeSlots = function (app, orderNumber, c) {
         client.Services.ServicesSoap.FindFreeSlots(args, function (err, result, raw, soapHeader) {
 
             if (!err) {
-                c(result);
                 console.log(JSON.stringify(result, null, 2));
+                callback(null, result);
+
             } else {
-                //console.log("ERR : " + JSON.stringify(err));
+
                 console.log(client.lastRequest)
-              
+                callback(err);
             }
-
-
         });
-
-
 
     });
 }
 
-var scheduleReferral = function (app,orderNumber,slotId) {
+var scheduleReferral = function (app, orderNumber, slotId) {
 
     arg = {
         "ult:scheduleReferralRequest": {
@@ -170,3 +170,6 @@ module.exports = {
     addReferrer: addReferrer
 
 }
+
+
+
