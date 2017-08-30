@@ -1,6 +1,6 @@
 /*-----------------------------------------------------------------------------
-This template demonstrates how to use an IntentDialog with a LuisRecognizer to add 
-natural language support to a bot. 
+This template demonstrates how to use an IntentDialog with a LuisRecognizer to add
+natural language support to a bot.
 For a complete walkthrough of creating this type of bot see the article at
 https://aka.ms/abs-node-luis
 -----------------------------------------------------------------------------*/
@@ -39,7 +39,7 @@ bot.recognizer(new builder.LuisRecognizer(LuisModelUrl));
 //bot.dialog('/', dialog);
 bot.dialog('/', [
     function (session, args) {
-       
+
         session.sendTyping(); //...typing
         //builder.Prompts.text(session, "Greetings! Please choose your appointment type.");
 
@@ -53,7 +53,7 @@ bot.dialog('/', [
         //console.log(JSON.stringify(session.userData,null,2))
         builder.Prompts.time(session, "Please enter desired date. format yyyy-mm-dd");
 
-        //builder.Prompts.number(session, "Hi " + results.response.entity + ", How many years have you been coding?"); 
+        //builder.Prompts.number(session, "Hi " + results.response.entity + ", How many years have you been coding?");
     },
     function (session, results, next) {
 
@@ -88,7 +88,7 @@ bot.dialog('/', [
 
 
     }, function (session, results, next) {
-       
+
         builder.Prompts.choice(session, "Please choose desired hospital and doctor.", session.userData.doctors, { listStyle: builder.ListStyle.button });
 
     }, function (session, results, next) {
@@ -98,14 +98,14 @@ bot.dialog('/', [
         let slots = session.userData.doctors[results.response.entity].Slots.Slot
         console.log("\nSlots : " + JSON.stringify(slots, null, 2))
         console.log(slots.length)
-        slots.forEach(function (slot) { 
+        slots.forEach(function (slot) {
 
             // console.log("Adding slot " + JSON.stringify(slot))
             console.log("Time in Adding slot " + new Date(slot.StartTime).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }) + " XX " +  new Date(slot.EndTime).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }));
 
             var label = new Date(slot.StartTime).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }) + " - "+ new Date(slot.EndTime).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
             console.log('\n adding ' + label);
-            
+
             timeslot[label] = slot;
 
         });
@@ -114,18 +114,18 @@ bot.dialog('/', [
         next();
 
     }, function (session, results){
-      
+
         builder.Prompts.choice(session, "Please choose desired hospital and doctor.", session.userData.timeslot, { listStyle: builder.ListStyle.button });
     },
     function (session, results) {
         let startAndEnd = results.response.entity;
         let slot = session.userData.timeslot[startAndEnd];
-        
+
         session.sendTyping(); //...typing
         ugbroka.scheduleReferral('HACK',session.userData.orderNumber, slot ).then(res => {
-            console.log(res) 
-            session.endDialog("Appointment Created: <br>Appointment Type: " 
-            + session.userData.appointmentType + "<br>Site and Doctor: " + session.userData.hospDoc + "<br>Date Time: " + startAndEnd);
+            console.log(res)
+            session.endDialog("Appointment Created: <br/>Appointment Type: "
+            + session.userData.appointmentType + "<br/>Site and Doctor: " + session.userData.hospDoc + "<br/>Date Time: " + startAndEnd);
         })
 
     }
@@ -145,7 +145,7 @@ intents.onDefault((session) => {
     session.send('Sorry, I did not understand \'%s\'.', session.message.text);
 });
 
-//bot.dialog('/', intents);    
+//bot.dialog('/', intents);
 
 if (useEmulator) {
     console.log('with emulator')
@@ -178,5 +178,3 @@ let randomReference = function () {
 
     return randomRef;
 }
-
-
