@@ -43,10 +43,10 @@ bot.dialog('/', [
                 session.sendTyping(); //...typing
                 //builder.Prompts.text(session, "Greetings! Please choose your appointment type.");
         
-                builder.Prompts.number(session, "Greetings! Please enter your Patient ID to continue.");
+                builder.Prompts.text(session, "Greetings! Please enter your Patient ID to continue.");
         
             },
-    function (session, args, results) {
+    function (session, results) {
         session.userData.patientID = results.response.entity;
 
         session.sendTyping(); //...typing
