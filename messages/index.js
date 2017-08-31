@@ -66,8 +66,6 @@ bot.dialog('/', [
             //console.log('Calling slots')
             session.userData.orderNumber = referrer.order.Number;
             return ugbroka.findFreeSlots(referrer.order.Application, referrer.order.Number);
-        }).catch(err => {
-            session.send(err);
         })
             .then(slots => {
                 //console.log(slots.FindFreeSlotsResult.Steps.Step[0].Programs);
