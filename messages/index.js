@@ -39,11 +39,20 @@ bot.recognizer(new builder.LuisRecognizer(LuisModelUrl));
 //bot.dialog('/', dialog);
 bot.dialog('/', [
     function (session, args) {
+        
+                session.sendTyping(); //...typing
+                //builder.Prompts.text(session, "Greetings! Please choose your appointment type.");
+        
+                builder.Prompts.number(session, "Greetings! Please enter your Patient ID to continue.");
+        
+            },
+    function (session, args, results) {
+        session.userData.patientID = results.response.entity;
 
         session.sendTyping(); //...typing
         //builder.Prompts.text(session, "Greetings! Please choose your appointment type.");
 
-        builder.Prompts.choice(session, "Greetings! Please choose your appointment type.", ["Cardio"], { listStyle: builder.ListStyle.button })
+        builder.Prompts.choice(session, "Please choose your appointment type.", ["Cardio"], { listStyle: builder.ListStyle.button })
 
     },
     function (session, results) {
@@ -61,7 +70,7 @@ bot.dialog('/', [
         console.log(session.userData.desiredDate)
         session.sendTyping(); //...typing
 
-        ugbroka.addReferrer('203180', session.userData.appointmentType, randomReference(), session.userData.desiredDate).then((referrer) => {
+        ugbroka.addReferrer(session.userData.patientID, session.userData.appointmentType, randomReference(), session.userData.desiredDate).then((referrer) => {
             //console.log(referrer);
             //console.log('Calling slots')
             session.userData.orderNumber = referrer.order.Number;
