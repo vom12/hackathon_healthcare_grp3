@@ -43,10 +43,12 @@ bot.dialog('/', [
         session.sendTyping(); //...typing
         //builder.Prompts.text(session, "Greetings! Please choose your appointment type.");
 
-        let greetingCheck = new Date().toLocaleString('en-US', { hour: 'numeric', hour12: true });
+        let greetingCheck = new Date().getHours();
         let greetingString;
 
-        if(greetingCheck.indexOf('AM') !== -1){
+        if(greetingCheck === 12){
+          session.userData.greetingMessage = "Good Noon! ";
+        }else if(greetingCheck < 12){
         	session.userData.greetingMessage = "Good Morning! ";
         }else{
         	session.userData.greetingMessage = "Good Evening! ";
