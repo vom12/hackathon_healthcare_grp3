@@ -42,7 +42,8 @@ bot.dialog('/', [
         builder.Prompts.text(session, 'What is your patientId?');
     },
     function (session, results) {
-
+        session.userData.patientId = = results.response.entity;
+        
         session.sendTyping(); //...typing
         //builder.Prompts.text(session, "Greetings! Please choose your appointment type.");
 
