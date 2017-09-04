@@ -39,6 +39,7 @@ bot.recognizer(new builder.LuisRecognizer(LuisModelUrl));
 //bot.dialog('/', dialog);
 bot.dialog('/', [
     function (session, args) {
+        session.userData.patientId = '';
         builder.Prompts.text(session, 'What is your patientId?');
     },
     function (session, results) {
@@ -58,7 +59,7 @@ bot.dialog('/', [
         	session.userData.greetingMessage = "Good Evening! ";
         }
 
-        builder.Prompts.choice(session, session.userData.greetingMessage + " " + session.userData.patientId + " Please choose your appointment type.", ["Cardio"], { listStyle: builder.ListStyle.button })
+        builder.Prompts.choice(session, session.userData.greetingMessage + " " + session.userData.patientId + " Please choose your appointment type.", ["Cardio"], { listStyle: builder.ListStyle.button });
 
     },
     function (session, results) {
