@@ -37,8 +37,21 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] });
 
 bot.recognizer(new builder.LuisRecognizer(LuisModelUrl));
 //bot.dialog('/', dialog);
+bot.dialog('askPatientId', [
+    function (session) {
+        builder.Prompts.text(session, 'Hi! What is your patientId?');
+    },
+    function (session, results) {
+        session.userData.patientId = results.response.entity;
+        session.endDialogWithResult(results);
+    }
+]);
+
 bot.dialog('/', [
     function (session, args) {
+      session.beginDialog('askPatientId');
+    },
+    function (session, results) {
 
         session.sendTyping(); //...typing
         //builder.Prompts.text(session, "Greetings! Please choose your appointment type.");
@@ -54,7 +67,7 @@ bot.dialog('/', [
         	session.userData.greetingMessage = "Good Evening! ";
         }
 
-        builder.Prompts.choice(session, session.userData.greetingMessage + "Please choose your appointment type.", ["Cardio"], { listStyle: builder.ListStyle.button })
+        builder.Prompts.choice(session, session.userData.greetingMessage + " " + session.userData.patientId + " Please choose your appointment type.", ["Cardio"], { listStyle: builder.ListStyle.button })
 
     },
     function (session, results) {
