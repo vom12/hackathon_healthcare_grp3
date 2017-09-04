@@ -37,19 +37,9 @@ var intents = new builder.IntentDialog({ recognizers: [recognizer] });
 
 bot.recognizer(new builder.LuisRecognizer(LuisModelUrl));
 //bot.dialog('/', dialog);
-bot.dialog('askPatientId', [
-    function (session) {
-        builder.Prompts.text(session, 'Hi! What is your patientId?');
-    },
-    function (session, results) {
-        session.userData.patientId = results.response.entity;
-        session.endDialogWithResult(results);
-    }
-]);
-
 bot.dialog('/', [
     function (session, args) {
-      session.beginDialog('askPatientId');
+        builder.Prompts.text(session, 'What is your patientId?');
     },
     function (session, results) {
 
