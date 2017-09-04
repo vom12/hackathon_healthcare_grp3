@@ -58,7 +58,7 @@ bot.dialog('/', [
         builder.Prompts.text(session, 'What is your patientId?');
     }, function (session, results) {
         session.userData.patientId = results.response;
-        builder.Prompts.choice(session, session.userData.patientId + "Please choose your appointment type.", ["Cardio"], { listStyle: builder.ListStyle.button });
+        builder.Prompts.choice(session, "Please choose your appointment type.", ["Cardio"], { listStyle: builder.ListStyle.button });
     },
     function (session, results) {
         session.userData.appointmentType = results.response.entity;
