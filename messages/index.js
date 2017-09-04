@@ -115,17 +115,21 @@ bot.dialog('/', [
 
     }, function (session, results){
 
-        builder.Prompts.choice(session, "Please choose desired hospital and doctor.", session.userData.timeslot, { listStyle: builder.ListStyle.button });
+        builder.Prompts.choice(session, "Please choose desired time.", session.userData.timeslot, { listStyle: builder.ListStyle.button });
     },
     function (session, results) {
         let startAndEnd = results.response.entity;
         let slot = session.userData.timeslot[startAndEnd];
 
+        var startTime = new Date(slot.StartTime).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', second : 'numeric' , hour12: false });
+        var endTime = new Date(slot.EndTime).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', second : 'numeric', hour12: false });
+
         session.sendTyping(); //...typing
-        ugbroka.scheduleReferral('HACK',session.userData.orderNumber, slot ).then(res => {
+        ugbroka.scheduleReferral('HACK',session.userData.orderNumber, slot, session.userData.desiredDate).then(res => {
             console.log(res)
             session.endDialog("Appointment Created: <br/>Appointment Type: "
-            + session.userData.appointmentType + "<br/>Site and Doctor: " + session.userData.hospDoc + "<br/>Date Time: " + startAndEnd);
+            + session.userData.appointmentType + "<br/>Site and Doctor: " + session.userData.hospDoc + "<br/>Date Start Time: " + session.userData.desiredDate + 'T' + startTime +
+          "<br/>Date End Time: " + session.userData.desiredDate + 'T' + endTime);
         })
 
     }

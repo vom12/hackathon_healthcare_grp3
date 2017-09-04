@@ -63,9 +63,9 @@ var addReferrer = function (patientID, department, referralNumber, day, callback
                         BookPeriod: appointment.BookPeriod,
                         Department: appointment.Department.Abbreviation
                     }
-                    
+
                     resolve(data);
-                  
+
                 } else {
                     console.log('ERROR : \n\n' + JSON.stringify(err, null, 2));
                     console.log('RAW' + raw);
@@ -77,7 +77,7 @@ var addReferrer = function (patientID, department, referralNumber, day, callback
             //}, { proxy: "http://web-proxy.phil.hp.com:8088" });
 
         });//soap
-        
+
     });// promise
 
 }//(203180,'CARDIO','HACK016','2017-08-26');
@@ -90,7 +90,7 @@ var findFreeSlots = function (app, orderNumber) {
             if (err) {
                 console.log(err)
             }
-    
+
             args = {
                 "findFreeSlotsRequest": {
                     "EnvironmentContext": {
@@ -115,32 +115,32 @@ var findFreeSlots = function (app, orderNumber) {
                     "IncludeSunday": "true"
                 }
             }
-    
-    
+
+
             client.Services.ServicesSoap.FindFreeSlots(args, function (err, result, raw, soapHeader) {
-    
+
                 if (!err) {
                     resolve(result);
                     //console.log(JSON.stringify(result, null, 2));
                 } else {
                     //console.log("ERR : " + JSON.stringify(err));
                     console.log(client.lastRequest)
-    
+
                 }
-    
+
             });
-    
-    
-    
+
+
+
         });
     });
 
- 
+
 }
 
-var scheduleReferral = function (app, orderNumber, slot) {
+var scheduleReferral = function (app, orderNumber, slot, desiredDate) {
 
-   
+
 
 
     return new Promise(resolve => {
@@ -148,7 +148,7 @@ var scheduleReferral = function (app, orderNumber, slot) {
             if (err) {
                 console.log(err)
             }
-    
+
             arg = {
                 "scheduleReferralRequest": {
                     "EnvironmentContext": {
@@ -175,23 +175,23 @@ var scheduleReferral = function (app, orderNumber, slot) {
                     "Note": "FROM CHAT BOT"
                 }
             }
-    
-    
+
+
             client.Services.ServicesSoap.ScheduleReferral(arg, function (err, result, raw, soapHeader) {
-    
+
                 if (!err) {
                     resolve(result);
                     //console.log(JSON.stringify(result, null, 2));
                 } else {
                     //console.log("ERR : " + JSON.stringify(err));
                     console.log(client.lastRequest)
-    
+
                 }
-    
+
             });
-    
-    
-    
+
+
+
         });
     });
 
