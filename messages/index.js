@@ -40,6 +40,7 @@ bot.recognizer(new builder.LuisRecognizer(LuisModelUrl));
 bot.dialog('/', [
 
     function (session, args) {
+        session.userData.patientId = '';
         builder.Prompts.text(session, 'What is your patientId?');
     },
     function (session, results) {
@@ -60,7 +61,6 @@ bot.dialog('/', [
         }
 
         builder.Prompts.choice(session, session.userData.greetingMessage + "Please select patient ID", ['203177', '203178', '203180', '203181', '203195'], { listStyle: builder.ListStyle.button });
-
 
     }, function (session, results) {
         session.userData.patientId = results.response.entity;
