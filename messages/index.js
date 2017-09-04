@@ -40,11 +40,6 @@ bot.recognizer(new builder.LuisRecognizer(LuisModelUrl));
 bot.dialog('/', [
 
     function (session, args) {
-        session.userData.patientId = '';
-        builder.Prompts.text(session, 'What is your patientId?');
-    },
-    function (session, results) {
-        session.userData.patientId = results.response.entity;
 
         session.sendTyping(); //...typing
         //builder.Prompts.text(session, "Greetings! Please choose your appointment type.");
@@ -60,11 +55,10 @@ bot.dialog('/', [
             session.userData.greetingMessage = "Good Evening! ";
         }
 
-        builder.Prompts.choice(session, session.userData.greetingMessage + "Please select patient ID", ['203177', '203178', '203180', '203181', '203195'], { listStyle: builder.ListStyle.button });
-
+        builder.Prompts.text(session, 'What is your patientId?');
     }, function (session, results) {
-        session.userData.patientId = results.response.entity;
-        builder.Prompts.choice(session, "Please choose your appointment type.", ["Cardio"], { listStyle: builder.ListStyle.button });
+        session.userData.patientId = results.response;
+        builder.Prompts.choice(session, session.userData.patientId + "Please choose your appointment type.", ["Cardio"], { listStyle: builder.ListStyle.button });
     },
     function (session, results) {
         session.userData.appointmentType = results.response.entity;
