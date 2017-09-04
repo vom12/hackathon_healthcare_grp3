@@ -43,7 +43,16 @@ bot.dialog('/', [
         session.sendTyping(); //...typing
         //builder.Prompts.text(session, "Greetings! Please choose your appointment type.");
 
-        builder.Prompts.choice(session, "Greetings! Please choose your appointment type.", ["Cardio"], { listStyle: builder.ListStyle.button })
+        let greetingCheck = new Date().toLocaleString('en-US', { hour: 'numeric', hour12: true });
+        let greetingString;
+
+        if(greetingCheck.indexOf('AM') !== -1){
+        	session.userData.greetingMessage = "Good Morning! ";
+        }else{
+        	session.userData.greetingMessage = "Good Evening! ";
+        }
+
+        builder.Prompts.choice(session, session.userData.greetingMessage + "Please choose your appointment type.", ["Cardio"], { listStyle: builder.ListStyle.button })
 
     },
     function (session, results) {
@@ -51,7 +60,7 @@ bot.dialog('/', [
         session.sendTyping(); //...typing
 
         //console.log(JSON.stringify(session.userData,null,2))
-        builder.Prompts.time(session, "Please enter desired date. format yyyy-mm-dd");
+        builder.Prompts.time(session, session.userData.greetingMessage + "Please enter desired date. format yyyy-mm-dd");
 
         //builder.Prompts.number(session, "Hi " + results.response.entity + ", How many years have you been coding?");
     },
@@ -89,7 +98,7 @@ bot.dialog('/', [
 
     }, function (session, results, next) {
 
-        builder.Prompts.choice(session, "Please choose desired hospital and doctor.", session.userData.doctors, { listStyle: builder.ListStyle.button });
+        builder.Prompts.choice(session, session.userData.greetingMessage + "Please choose desired hospital and doctor.", session.userData.doctors, { listStyle: builder.ListStyle.button });
 
     }, function (session, results, next) {
         session.userData.hospDoc = results.response.entity;
@@ -115,19 +124,19 @@ bot.dialog('/', [
 
     }, function (session, results){
 
-        builder.Prompts.choice(session, "Please choose desired time.", session.userData.timeslot, { listStyle: builder.ListStyle.button });
+        builder.Prompts.choice(session, session.userData.greetingMessage + "Please choose desired time.", session.userData.timeslot, { listStyle: builder.ListStyle.button });
     },
     function (session, results) {
         let startAndEnd = results.response.entity;
         let slot = session.userData.timeslot[startAndEnd];
 
-        var startTime = new Date(slot.StartTime).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', second : 'numeric' , hour12: false });
-        var endTime = new Date(slot.EndTime).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', second : 'numeric', hour12: false });
+        let startTime = new Date(slot.StartTime).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', second : 'numeric' , hour12: false });
+        let endTime = new Date(slot.EndTime).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', second : 'numeric', hour12: false });
 
         session.sendTyping(); //...typing
         ugbroka.scheduleReferral('HACK',session.userData.orderNumber, slot, session.userData.desiredDate).then(res => {
             console.log(res)
-            session.endDialog("Appointment Created: <br/>Appointment Type: "
+            session.endDialog(session.userData.greetingMessage + "Appointment Created: <br/>Appointment Type: "
             + session.userData.appointmentType + "<br/>Site and Doctor: " + session.userData.hospDoc + "<br/>Date Start Time: " + session.userData.desiredDate + 'T' + startTime +
           "<br/>Date End Time: " + session.userData.desiredDate + 'T' + endTime);
         })

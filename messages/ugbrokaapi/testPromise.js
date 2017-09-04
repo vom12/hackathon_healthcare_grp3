@@ -149,8 +149,8 @@ var scheduleReferral = function (app, orderNumber, slot, desiredDate) {
                 console.log(err)
             }
 
-            var startTime = new Date(slot.StartTime).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', second : 'numeric' , hour12: false });
-            var endTime = new Date(slot.EndTime).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', second : 'numeric', hour12: false });
+            let startTime = new Date(slot.StartTime).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', second : 'numeric' , hour12: false });
+            let endTime = new Date(slot.EndTime).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', second : 'numeric', hour12: false });
 
             arg = {
                 "scheduleReferralRequest": {
