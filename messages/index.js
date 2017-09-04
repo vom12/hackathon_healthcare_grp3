@@ -138,7 +138,7 @@ bot.dialog('/', [
         session.sendTyping(); //...typing
         ugbroka.scheduleReferral('HACK', session.userData.orderNumber, slot, session.userData.desiredDate).then(res => {
             console.log(res)
-            session.endDialog(session.userData.greetingMessage + "Appointment Created: <br/>Appointment Type: "
+            session.endDialog("patientId:" session.userData.patientId + "<br/>" + session.userData.greetingMessage + "Appointment Created: <br/>Appointment Type: "
                 + session.userData.appointmentType + "<br/>Site and Doctor: " + session.userData.hospDoc + "<br/>Date Start Time: " + session.userData.desiredDate + 'T' + startTime +
                 "<br/>Date End Time: " + session.userData.desiredDate + 'T' + endTime);
         })
