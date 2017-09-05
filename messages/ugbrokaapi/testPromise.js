@@ -4,18 +4,17 @@ var soapWSDL = path.join(__dirname, '../Services.xml');
 
 var dateFormat = require('dateformat');
 
-
-
+var proxy = (process.env.NODE_ENV == 'development') ? { proxy: "http://web-proxy.phil.hp.com:8088" } : {};
+console.log('proxy : ' + JSON.stringify(proxy));
 console.log('Loading soapcalls.js' + soapWSDL)
 
 var addReferrer = function (patientID, department, referralNumber, day, callback) {
-    console.log('Adding referer')
-
+  
     var start_date = new Date(day);
-    start_date.setDate(start_date.getDate()-1)
+    start_date.setDate(start_date.getDate() - 1)
     start_date = dateFormat(start_date, "yyyy-mm-dd")
     console.log("start_date " + start_date)
-    return new Promise( (resolve,reject) =>  {
+    return new Promise((resolve, reject) => {
 
         soap.createClient(soapWSDL, function (err, client) {
             if (err) {
@@ -74,11 +73,11 @@ var addReferrer = function (patientID, department, referralNumber, day, callback
                     resolve(data);
 
                 } else {
-                   
+                    console.log(err)
                     reject(err);
                 }
 
-            });
+            }, proxy);
             //}, { proxy: "http://web-proxy.phil.hp.com:8088" });
 
         });//soap
@@ -133,7 +132,7 @@ var findFreeSlots = function (app, orderNumber) {
 
                 }
 
-            });
+            }, proxy);
             //}, { proxy: "http://web-proxy.phil.hp.com:8088" });
 
 
@@ -146,17 +145,14 @@ var findFreeSlots = function (app, orderNumber) {
 
 var scheduleReferral = function (app, orderNumber, slot, desiredDate) {
 
-
-
-
     return new Promise(resolve => {
         soap.createClient(soapWSDL, function (err, client) {
             if (err) {
                 console.log(err)
             }
 
-            let startTime = new Date(slot.StartTime).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', second : 'numeric' , hour12: false });
-            let endTime = new Date(slot.EndTime).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', second : 'numeric', hour12: false });
+            let startTime = new Date(slot.StartTime).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false });
+            let endTime = new Date(slot.EndTime).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: false });
 
             arg = {
                 "scheduleReferralRequest": {
@@ -171,13 +167,13 @@ var scheduleReferral = function (app, orderNumber, slot, desiredDate) {
                     },
                     "ReferralIdentifier": {
                         "IdentifierName": "Order",
-                        "IdentifierValue": app+ "|" + orderNumber
+                        "IdentifierValue": app + "|" + orderNumber
                     },
                     "SlotIdentifiers": {
                         "SlotIdentifier": {
                             "InternalId": slot.Id,
-                            "StartDateTime": startTime,
-                            "EndDateTime": endTime,
+                            "StartDateTime": slot.StartTime,
+                            "EndDateTime": slot.EndTime,
                             "StepSequence": slot.StepSequence
                         }
                     },
@@ -197,11 +193,11 @@ var scheduleReferral = function (app, orderNumber, slot, desiredDate) {
 
                 }
 
-            });
-
+            },proxy);
 
 
         });
+        //});
     });
 
 }
@@ -209,6 +205,6 @@ var scheduleReferral = function (app, orderNumber, slot, desiredDate) {
 module.exports = {
     findFreeSlots: findFreeSlots,
     addReferrer: addReferrer,
-    scheduleReferral:scheduleReferral
+    scheduleReferral: scheduleReferral
 
 }

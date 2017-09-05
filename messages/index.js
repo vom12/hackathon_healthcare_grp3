@@ -37,35 +37,69 @@ var dialog = new builder.LuisDialog(LuisModelUrl);
 
 bot.recognizer(new builder.LuisRecognizer(LuisModelUrl));
 //bot.dialog('/', dialog);
-bot.dialog('/', [
+
+bot.dialog('askPatientId', [
+    function (session, args, next) {
+        if (!session.userData.patientId) {
+            session = setupGreeting(session);
+            session.send(session.userData.greetingMessage + " Please enter patient ID");
+        } else {
+            session.beginDialog('askForDept');
+        }
+    }]
+
+);
+
+bot.dialog('ChatInit', [
+    function (session, args) {
+
+        session.beginDialog('askPatientId');
+    }
+]).triggerAction({ matches: /hi|hello/i });
+
+
+bot.dialog('recievePatientId', [
 
 
     function (session, args, next) {
         session.userData = {};
+
         if (!session.userData['patientId']) {
             session.userData.patientId = session.message.text;
 
         }
-        session.send('Patiend ID : ' + session.userData.patientId);
         session.beginDialog('askForDept');
 
     }]
 
-).triggerAction({matches: /^[0-9]{6,7}$/ });
+).triggerAction({ matches: /^[0-9]{6,7}$/ });
 
 bot.dialog('reset', [
 
 
     function (session, args, next) {
-       session.userData = {};
-       session.endConversation("Ok Bye");
+        if (!!session.userData['patientId']) {
+            session.userData = { patientId: session.userData['patientId'] };
+            session.endConversation("Ok Bye");
+
+        }
+
+        session.beginDialog('askPatientId');
 
     }]
 
 ).triggerAction({ matches: /reset/ });;
 
-bot.endConversationAction('/', "Ok... See you later.", { matches: 'reset' });
-
+bot.dialog('newBooking', [
+    function (session, results) {
+        if (!!session.userData['patientId']) {
+            session.userData = { patientId: session.userData['patientId'] };
+            session.beginDialog('askForDept')
+        } else {
+            session.beginDialog('askPatientId')
+        }
+    }]
+).triggerAction({ matches: /[book|schedule|new].*appointment/i });
 
 bot.dialog('askForDept', [
     function (session, results, next) {
@@ -74,17 +108,8 @@ bot.dialog('askForDept', [
 
             session.sendTyping(); //...typing
             //builder.Prompts.text(session, "Greetings! Please choose your appointment type.");
+            setupGreeting(session);
 
-            let greetingCheck = new Date().getHours();
-            let greetingString;
-
-            if (greetingCheck === 12) {
-                session.userData.greetingMessage = "Good Noon! ";
-            } else if (greetingCheck < 12) {
-                session.userData.greetingMessage = "Good Morning! ";
-            } else {
-                session.userData.greetingMessage = "Good Evening! ";
-            }
             builder.Prompts.choice(session, session.userData.greetingMessage + " Please choose your appointment type. (select number)", ["Cardio"], { listStyle: builder.ListStyle.list });
         } else {
             session.beginDialog('askForDate')
@@ -113,6 +138,8 @@ bot.dialog('askForDate', [
     }]
 );
 
+
+
 bot.dialog('askForDocAndSlots', [
     function (session, results, next) {
 
@@ -138,7 +165,7 @@ bot.dialog('askForDocAndSlots', [
         }).catch(function (err) {
             console.log(err);
             session.send(err.message)
-            if (err.message.search(/date/) != -1) {
+            if (err.message.search(/date|Program/) != -1) {
                 session.userData.desiredDate = null;
                 session.beginDialog("askForDate");
             }
@@ -186,10 +213,13 @@ bot.dialog('askForDocAndSlots', [
 
         session.sendTyping(); //...typing
         ugbroka.scheduleReferral('HACK', session.userData.orderNumber, slot, session.userData.desiredDate).then(res => {
-            console.log(res)
-            session.endDialog("patientId:" + session.userData.patientId + "<br/>" + session.userData.greetingMessage + "Appointment Created: <br/>Appointment Type: "
-                + session.userData.appointmentType + "<br/>Site and Doctor: " + session.userData.hospDoc + "<br/>Date Start Time: " + session.userData.desiredDate + 'T' + startTime +
-                "<br/>Date End Time: " + session.userData.desiredDate + 'T' + endTime);
+
+            session.endConversation("ID: " + session.userData.patientId + "\n\r" + session.userData.greetingMessage + "Appointment Created: \n\rAppointment Type: "
+                + session.userData.appointmentType + "\n\rSite and Doctor: " + session.userData.hospDoc + "\n\rDate Start Time: " + session.userData.desiredDate + ' ' + startTime +
+                "\n\rDate End Time: " + session.userData.desiredDate + ' ' + endTime);
+
+        }).catch(err => {
+            session.send(err);
         })
 
     }
@@ -227,4 +257,17 @@ let randomReference = function () {
     randomRef = randomRef + (Math.floor(Math.random() * 900) + 100);
 
     return randomRef;
+}
+
+function setupGreeting(session) {
+    let greetingCheck = new Date().getHours();
+
+    if (greetingCheck === 12) {
+        session.userData.greetingMessage = "Good Noon! ";
+    } else if (greetingCheck < 12) {
+        session.userData.greetingMessage = "Good Morning! ";
+    } else {
+        session.userData.greetingMessage = "Good Evening! ";
+    }
+    return session;
 }
