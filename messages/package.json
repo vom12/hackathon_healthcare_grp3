@@ -6,13 +6,15 @@
   "dependencies": {
     "botbuilder": "^3.7.0",
     "botbuilder-azure": "3.0.2",
+    "dateformat": "^2.0.0",
     "soap": "^0.20.0"
   },
   "devDependencies": {
-      "restify": "^4.3.0"
-  },  
+    "restify": "^4.3.0"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "debug": "node --nolazy --debug-brk=5858 index.js"
   },
   "author": "",
   "license": "ISC"

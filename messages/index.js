@@ -30,52 +30,92 @@ var luisAPIHostName = process.env.LuisAPIHostName || 'westus.api.cognitive.micro
 const LuisModelUrl = 'https://' + luisAPIHostName + '/luis/v1/application?id=' + luisAppId + '&subscription-key=' + luisAPIKey;
 
 // Main dialog with LUIS
-//var recognizer = new builder.LuisRecognizer(LuisModelUrl);
-//var intents = new builder.IntentDialog({ recognizers: [recognizer] });
-//var dialog = new builder.LuisDialog(LuisModelUrl);
+var recognizer = new builder.LuisRecognizer(LuisModelUrl);
+var intents = new builder.IntentDialog({ recognizers: [recognizer] });
+var dialog = new builder.LuisDialog(LuisModelUrl);
 
 
-//bot.recognizer(new builder.LuisRecognizer(LuisModelUrl));
+bot.recognizer(new builder.LuisRecognizer(LuisModelUrl));
 //bot.dialog('/', dialog);
 bot.dialog('/', [
 
+
     function (session, args, next) {
-        session.userData.patientId = session.message.text;
-        session.send('Patiend ID = ' +  session.userData.patientId);
-        next();
-    },
-    function (session, results) {
 
-        session.sendTyping(); //...typing
-        //builder.Prompts.text(session, "Greetings! Please choose your appointment type.");
+        if (!session.userData['patientId']) {
+            session.userData.patientId = session.message.text;
 
-        let greetingCheck = new Date().getHours();
-        let greetingString;
-
-        if (greetingCheck === 12) {
-            session.userData.greetingMessage = "Good Noon! ";
-        } else if (greetingCheck < 12) {
-            session.userData.greetingMessage = "Good Morning! ";
-        } else {
-            session.userData.greetingMessage = "Good Evening! ";
         }
+        session.send('Patiend ID : ' + session.userData.patientId);
+        session.beginDialog('askForDept');
 
-       
-        builder.Prompts.choice(session, session.userData.greetingMessage +  " Please choose your appointment type.", ["Cardio"], { listStyle: builder.ListStyle.button });
-    },
-    function (session, results) {
-        session.userData.appointmentType = results.response.entity;
-        session.sendTyping(); //...typing
+    }]
 
-        //console.log(JSON.stringify(session.userData,null,2))
-        builder.Prompts.time(session, session.userData.greetingMessage + "Please enter desired date. format yyyy-mm-dd");
+);
 
-        //builder.Prompts.number(session, "Hi " + results.response.entity + ", How many years have you been coding?");
-    },
+bot.dialog('reset', [
+
+
+    function (session, args, next) {
+       session.userData = {};
+       session.endConversation("Ok Bye");
+
+    }]
+
+).triggerAction({ matches: /reset/ });;
+
+bot.endConversationAction('/', "Ok... See you later.", { matches: 'reset' });
+
+
+bot.dialog('askForDept', [
     function (session, results, next) {
 
+        if (!session.userData['appointmentType']) {
+
+            session.sendTyping(); //...typing
+            //builder.Prompts.text(session, "Greetings! Please choose your appointment type.");
+
+            let greetingCheck = new Date().getHours();
+            let greetingString;
+
+            if (greetingCheck === 12) {
+                session.userData.greetingMessage = "Good Noon! ";
+            } else if (greetingCheck < 12) {
+                session.userData.greetingMessage = "Good Morning! ";
+            } else {
+                session.userData.greetingMessage = "Good Evening! ";
+            }
+            builder.Prompts.choice(session, session.userData.greetingMessage + " Please choose your appointment type. (select number)", ["Cardio"], { listStyle: builder.ListStyle.list });
+        } else {
+            session.beginDialog('askForDate')
+        }
+
+
+    }, function (session, results) {
+        session.userData.appointmentType = results.response.entity;
+        session.beginDialog('askForDate')
+
+    }]
+);
+
+bot.dialog('askForDate', [
+    function (session, results) {
+        if (!session.userData.desiredDate) {
+            session.sendTyping(); //...typing
+            builder.Prompts.time(session, session.userData.greetingMessage + " Please enter desired date. format yyyy-mm-dd");
+        } else {
+            session.beginDialog('askForDocAndSlots')
+        }
+
+    }, function (session, results) {
         session.userData.desiredDate = results.response.entity;
-        console.log(session.userData.desiredDate)
+        session.beginDialog('askForDocAndSlots')
+    }]
+);
+
+bot.dialog('askForDocAndSlots', [
+    function (session, results, next) {
+
         // session.sendTyping(); //...typing
 
         ugbroka.addReferrer(session.userData.patientId, session.userData.appointmentType, randomReference(), session.userData.desiredDate).then((referrer) => {
@@ -92,29 +132,35 @@ bot.dialog('/', [
                 session.userData.doctors[item.Resource.Name + " of " + item.Site.Name] = item;
             });
 
-        }).then(()=>{
-             console.log("calling next()")
-             next();
+        }).then(() => {
+
+            next();
         }).catch(function (err) {
             console.log(err);
+            session.send(err.message)
+            if (err.message.search(/date/) != -1) {
+                session.userData.desiredDate = null;
+                session.beginDialog("askForDate");
+            }
+
         });
 
 
 
     }, function (session, results) {
 
-        builder.Prompts.choice(session, session.userData.greetingMessage + "Please choose desired hospital and doctor.", session.userData.doctors, { listStyle: builder.ListStyle.button });
+        builder.Prompts.choice(session, session.userData.greetingMessage + "Please choose desired hospital and doctor.", session.userData.doctors, { listStyle: builder.ListStyle.list });
 
     }, function (session, results, next) {
         session.userData.hospDoc = results.response.entity;
         let timeslot = {};
         session.sendTyping(); //...typing
         let slots = session.userData.doctors[results.response.entity].Slots.Slot
-        console.log("\nSlots : " + JSON.stringify(slots, null, 2))
+
         console.log(slots.length)
         slots.forEach(function (slot) {
 
-            // console.log("Adding slot " + JSON.stringify(slot))
+
             console.log("Time in Adding slot " + new Date(slot.StartTime).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }) + " XX " + new Date(slot.EndTime).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }));
 
             var label = new Date(slot.StartTime).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }) + " - " + new Date(slot.EndTime).toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })
@@ -125,11 +171,11 @@ bot.dialog('/', [
         });
 
         session.userData.timeslot = timeslot;
-     next();
+        next();
 
     }, function (session, results) {
 
-        builder.Prompts.choice(session, session.userData.greetingMessage + "Please choose desired time.", session.userData.timeslot, { listStyle: builder.ListStyle.button });
+        builder.Prompts.choice(session, session.userData.greetingMessage + "Please choose desired time.", session.userData.timeslot, { listStyle: builder.ListStyle.list });
     },
     function (session, results) {
         let startAndEnd = results.response.entity;
@@ -148,14 +194,8 @@ bot.dialog('/', [
 
     }
 
-]).triggerAction({ matches: 'ScheduleAppointment' });
+])
 
-
-// intents.onDefault((session) => {
-//     session.send('Sorry, I did not understand \'%s\'.', session.message.text);
-// });
-
-//bot.dialog('/', intents);
 
 if (useEmulator) {
     console.log('with emulator')

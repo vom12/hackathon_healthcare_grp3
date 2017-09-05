@@ -2,12 +2,19 @@ var soap = require('soap');
 var path = require('path');
 var soapWSDL = path.join(__dirname, '../Services.xml');
 
+var dateFormat = require('dateformat');
+
 
 
 console.log('Loading soapcalls.js' + soapWSDL)
 
 var addReferrer = function (patientID, department, referralNumber, day, callback) {
     console.log('Adding referer')
+
+    var start_date = new Date(day);
+    start_date.setDate(start_date.getDate()-1)
+    start_date = dateFormat(start_date, "yyyy-mm-dd")
+    console.log("start_date " + start_date)
     return new Promise( (resolve,reject) =>  {
 
         soap.createClient(soapWSDL, function (err, client) {
@@ -44,7 +51,7 @@ var addReferrer = function (patientID, department, referralNumber, day, callback
                         "s2:Value": "BAFI"
                     },
                     "s2:Note": "Please see the patient ASAP, Added from BOT",
-                    "s2:StartDate": '2017-08-25',
+                    "s2:StartDate": start_date,
                     "s2:EndDate": day,
                     "s2:ReferralApplication": "HACK",
                     "s2:ReferralNumber": referralNumber
@@ -67,9 +74,7 @@ var addReferrer = function (patientID, department, referralNumber, day, callback
                     resolve(data);
 
                 } else {
-                    console.log('ERROR : \n\n' + JSON.stringify(err, null, 2));
-                    console.log('RAW' + raw);
-                    console.log('REQUEST' + client.lastRequest)
+                   
                     reject(err);
                 }
 
@@ -129,6 +134,7 @@ var findFreeSlots = function (app, orderNumber) {
                 }
 
             });
+            //}, { proxy: "http://web-proxy.phil.hp.com:8088" });
 
 
 

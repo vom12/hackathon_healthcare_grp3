@@ -1,14 +1,13 @@
-
 {
     "version": "0.2.0",
     "configurations": [
-    {
-        "type": "node",
-        "request": "attach",
-        "name": "Attach",
-        "protocol": "legacy",
-        "port": 5858
-    },
+
+        {
+            "type": "node",
+            "request": "attach",
+            "name": "Attach",
+           
+        },
         {
             "name": "Launch",
             "type": "node",
@@ -17,7 +16,9 @@
             "cwd": "${workspaceRoot}",
             "env": {
                 "NODE_ENV": "development"
-            }
+            },
+         
+            
         }
     ]
 }
