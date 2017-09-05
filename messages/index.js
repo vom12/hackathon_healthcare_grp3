@@ -37,7 +37,7 @@ var dialog = new builder.LuisDialog(LuisModelUrl);
 
 bot.recognizer(new builder.LuisRecognizer(LuisModelUrl));
 //bot.dialog('/', dialog);
-bot.dialog('/', [
+bot.dialog('xxx', [
 
 
     function (session, args, next) {
