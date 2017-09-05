@@ -37,7 +37,7 @@ var dialog = new builder.LuisDialog(LuisModelUrl);
 
 bot.recognizer(new builder.LuisRecognizer(LuisModelUrl));
 //bot.dialog('/', dialog);
-bot.dialog('xxx', [
+bot.dialog('/', [
 
 
     function (session, args, next) {
@@ -51,7 +51,7 @@ bot.dialog('xxx', [
 
     }]
 
-).triggerAction({matches: /^[100000-9999999]$/});
+).triggerAction({matches: /^[0-9]{6,7}$/ });
 
 bot.dialog('reset', [
 
