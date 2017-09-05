@@ -41,7 +41,7 @@ bot.dialog('/', [
 
 
     function (session, args, next) {
-
+        session.userData = {};
         if (!session.userData['patientId']) {
             session.userData.patientId = session.message.text;
 
@@ -51,7 +51,7 @@ bot.dialog('/', [
 
     }]
 
-);
+).triggerAction({matches: /^[100000-9999999]$/});
 
 bot.dialog('reset', [
 
